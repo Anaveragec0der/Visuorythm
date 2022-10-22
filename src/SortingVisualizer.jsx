@@ -28,7 +28,7 @@ function SortingVisualizer() {
     resetArray();
   }
   async function clicked() {
-    const objectArray = InsertionSort(array);
+    const objectArray = InsertionSort(array.slice());
     // console.log(objectArray);
     for (let i = 0; i < objectArray.length; i++) {
       for (let j = 0; j < objectArray[i].length; j++) {
@@ -43,11 +43,12 @@ function SortingVisualizer() {
         // }, i * 10);
         barOneStyle.backgroundColor = "red";
         barTwoStyle.backgroundColor = "red";
-        await sleep(50);
+        await sleep(5);
 
-        barOneStyle.height = `${array[idx1]}px`;
-        barTwoStyle.height = `${array[idx2]}px`;
-        await sleep(50);
+        const temp = barOneStyle.height;
+        barOneStyle.height = barTwoStyle.height;
+        barTwoStyle.height = temp;
+        await sleep(5);
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
