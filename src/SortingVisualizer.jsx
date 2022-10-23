@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
-import InsertionSort from "./sortingAlgorithm/allSortingAlgrithms";
+import InsertionSort, {
+  SelectionSort
+} from "./sortingAlgorithm/allSortingAlgrithms";
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
@@ -20,14 +22,20 @@ function SortingVisualizer() {
   useEffect(() => {
     resetArray();
   }, []);
+
+  //helper function to perform animation
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
-  function handleClick() {
+
+  //for generating new array
+  function generateNewArray() {
     // console.log("clicked");
     resetArray();
   }
-  async function clicked() {
+
+  //Inserion Sort Visualization
+  async function performInsertionSort() {
     const objectArray = InsertionSort(array.slice());
     // console.log(objectArray);
     for (let i = 0; i < objectArray.length; i++) {
@@ -38,9 +46,7 @@ function SortingVisualizer() {
         const arrayBars = document.getElementsByClassName("array-bar");
         const barOneStyle = arrayBars[idx1].style;
         const barTwoStyle = arrayBars[idx2].style;
-        // setTimeout(() => {
 
-        // }, i * 10);
         barOneStyle.backgroundColor = "red";
         barTwoStyle.backgroundColor = "red";
         await sleep(20);
@@ -52,12 +58,37 @@ function SortingVisualizer() {
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
-        // setTimeout(() => {
-
-        // }, 50);
       }
     }
   }
+
+  //Selection Sort Visualization
+  async function performSelectionSort() {
+    const objectArray = SelectionSort(array.slice());
+
+    for (let i = 0; i < objectArray.length; i++) {
+      for (let j = 0; j < objectArray[i].length; j++) {
+        const { a: idx1, b: idx2 } = objectArray[i][j];
+        const arrayBars = document.getElementsByClassName("array-bar");
+        const barOneStyle = arrayBars[idx1].style;
+        const barTwoStyle = arrayBars[idx2].style;
+
+        barOneStyle.backgroundColor = "red";
+        barTwoStyle.backgroundColor = "red";
+        await sleep(50);
+
+        const temp = barOneStyle.height;
+        barOneStyle.height = barTwoStyle.height;
+        barTwoStyle.height = temp;
+        await sleep(50);
+
+        barOneStyle.backgroundColor = "turquoise";
+        barTwoStyle.backgroundColor = "turquoise";
+      }
+    }
+  }
+
+  //display original array in the console
   function ShowArray() {
     console.log(array);
   }
@@ -75,9 +106,10 @@ function SortingVisualizer() {
           </div>
         ))}
         <br />
-        <button onClick={handleClick}> Click here </button>
-        <button onClick={clicked}>Insertion Sort</button>
-        <button onClick={ShowArray}> Show </button>
+        <button onClick={generateNewArray}> Generate New Array </button>
+        <button onClick={performInsertionSort}>Insertion Sort</button>
+        <button onClick={performSelectionSort}> Selection Sort</button>
+        <button onClick={ShowArray}> Show Original Array </button>
       </div>
     </div>
   );

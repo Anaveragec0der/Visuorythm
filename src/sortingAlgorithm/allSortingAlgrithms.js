@@ -1,6 +1,5 @@
+let arr = [];
 function InsertionSort(Array) {
-  let arr = [];
-
   for (let i = 1; i < Array.length; i++) {
     let arr1 = [];
     let j = i - 1;
@@ -23,5 +22,28 @@ function InsertionSort(Array) {
   console.log(arr);
   return arr;
 }
+function SelectionSort(Array) {
+  let i, j, k;
+  // let obj={};
+  for (i = 0; i < Array.length - 1; i++) {
+    let arr1 = [];
+    for (j = k = i; j < Array.length; j++) {
+      if (Array[j] < Array[k]) {
+        k = j;
+      }
+    }
+    [Array[i], Array[k]] = [Array[k], Array[i]];
+    let obj = {
+      a: i,
+      b: k
+    };
+    arr1.push(obj);
 
+    arr.push(arr1);
+  }
+  console.log(Array);
+  console.log(arr);
+  return arr;
+}
+export { SelectionSort };
 export default InsertionSort;
