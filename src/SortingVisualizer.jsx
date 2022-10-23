@@ -17,44 +17,48 @@ function SortingVisualizer() {
     setArray(arr);
     // console.log("reset button clicked");
   }
+
   useEffect(() => {
     resetArray();
   }, []);
+
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  };
+  }
+
   function handleClick() {
     // console.log("clicked");
     resetArray();
   }
+
   async function clicked() {
     const objectArray = InsertionSort(array.slice());
-    // console.log(objectArray);
+    
     for (let i = 0; i < objectArray.length; i++) {
       for (let j = 0; j < objectArray[i].length; j++) {
-        // console.log(objectArray[i][j]);
         const { a: idx1, b: idx2, swap } = objectArray[i][j];
-        // console.log(idx1 + " " + idx2 + " " + swap);
         const arrayBars = document.getElementsByClassName("array-bar");
         const barOneStyle = arrayBars[idx1].style;
         const barTwoStyle = arrayBars[idx2].style;
-        // setTimeout(() => {
-
-        // }, i * 10);
         barOneStyle.backgroundColor = "red";
         barTwoStyle.backgroundColor = "red";
         await sleep(5);
-
-        const temp = barOneStyle.height;
-        barOneStyle.height = barTwoStyle.height;
-        barTwoStyle.height = temp;
+        if(swap){
+          const xOffsetA = arrayBars[idx1].getBoundingClientRect().left - arrayBars[idx2].getBoundingClientRect().left;
+          const shiftA = xOffsetA*-1;
+          const shiftB = xOffsetA;
+          barOneStyle.setProperty('transform',`translateX(${shiftA}}px)`);
+          barTwoStyle.setProperty('transform',`translateX(${shiftB}px)`);
+          await sleep(200);
+          barOneStyle.setProperty('transform','');
+          barTwoStyle.setProperty('transform','');
+          const temp = barOneStyle.height;
+          barOneStyle.height = barTwoStyle.height;
+          barTwoStyle.height = temp;
+        }
         await sleep(5);
-
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
-        // setTimeout(() => {
-
-        // }, 50);
       }
     }
   }
