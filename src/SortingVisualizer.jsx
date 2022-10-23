@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
 import InsertionSort, {
+  bubbleSort,
   SelectionSort
 } from "./sortingAlgorithm/allSortingAlgrithms";
 
@@ -88,6 +89,35 @@ function SortingVisualizer() {
     }
   }
 
+  async function performBubbleSort(){
+    const {steps,sortedArray} = bubbleSort(array.slice());
+    for (let i = 0; i < steps.length; i++) {
+      for (let j = 0; j < steps[i].length; j++) {
+        // console.log(objectArray[i][j]);
+        const { a: idx1, b: idx2 } = steps[i][j];
+        const arrayBars = document.getElementsByClassName("array-bar");
+        const barOneStyle = arrayBars[idx1].style;
+        const barTwoStyle = arrayBars[idx2].style;
+
+        barOneStyle.backgroundColor = "red";
+        barTwoStyle.backgroundColor = "red";
+        await sleep(20);
+
+        if(steps[i][j].swap){
+          const temp = barOneStyle.height;
+          barOneStyle.height = barTwoStyle.height;
+          barTwoStyle.height = temp;
+        }
+
+        await sleep(20);
+
+        barOneStyle.backgroundColor = "turquoise";
+        barTwoStyle.backgroundColor = "turquoise";
+      }
+    }
+    setArray(sortedArray);
+  }
+
   //display original array in the console
   function ShowArray() {
     console.log(array);
@@ -109,6 +139,7 @@ function SortingVisualizer() {
         <button onClick={generateNewArray}> Generate New Array </button>
         <button onClick={performInsertionSort}>Insertion Sort</button>
         <button onClick={performSelectionSort}> Selection Sort</button>
+        <button onClick={performBubbleSort}>Bubble Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
       </div>
     </div>

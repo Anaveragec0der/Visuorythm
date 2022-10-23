@@ -45,5 +45,30 @@ function SelectionSort(Array) {
   console.log(arr);
   return arr;
 }
-export { SelectionSort };
+
+const bubbleSort = (arr)=>{
+    const passes = [];
+    let swapped = false;
+    for(let i=0;i<arr.length;i++){
+        let itr = [];
+        for(let j=0;j<arr.length-i-1;j++){
+            itr[j] = {
+                a : j,
+                b : j+1 
+            };
+            if(arr[j]>arr[j+1]){
+                swapped=true;
+                itr[j]['swap'] = true;
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+        passes.push(itr)
+        if(!swapped)break;
+    }
+    return {steps:passes,sortedArray:arr};
+}
+
+export { SelectionSort, bubbleSort };
 export default InsertionSort;
