@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
-import InsertionSort from "./sortingAlgorithm/insertionSort";
+import InsertionSort from "./sortingAlgorithm/allSortingAlgrithms";
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
@@ -33,7 +33,7 @@ function SortingVisualizer() {
     for (let i = 0; i < objectArray.length; i++) {
       for (let j = 0; j < objectArray[i].length; j++) {
         // console.log(objectArray[i][j]);
-        const { a: idx1, b: idx2, swap } = objectArray[i][j];
+        const { a: idx1, b: idx2 } = objectArray[i][j];
         // console.log(idx1 + " " + idx2 + " " + swap);
         const arrayBars = document.getElementsByClassName("array-bar");
         const barOneStyle = arrayBars[idx1].style;
@@ -43,12 +43,12 @@ function SortingVisualizer() {
         // }, i * 10);
         barOneStyle.backgroundColor = "red";
         barTwoStyle.backgroundColor = "red";
-        await sleep(5);
+        await sleep(20);
 
         const temp = barOneStyle.height;
         barOneStyle.height = barTwoStyle.height;
         barTwoStyle.height = temp;
-        await sleep(5);
+        await sleep(20);
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";

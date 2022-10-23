@@ -1,19 +1,17 @@
 function InsertionSort(Array) {
   let arr = [];
+
   for (let i = 1; i < Array.length; i++) {
     let arr1 = [];
     let j = i - 1;
 
     let x = Array[i];
     while (j > -1 && Array[j] > x) {
-      let temp;
-      temp = Array[j + 1];
-      Array[j + 1] = Array[j];
-      Array[j] = temp;
+      //swapping using destructuring
+      [Array[j + 1], Array[j]] = [Array[j], Array[j + 1]];
       let obj = {
         a: j + 1,
-        b: j,
-        swap: true
+        b: j
       };
 
       j--;
