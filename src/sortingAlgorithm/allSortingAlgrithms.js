@@ -126,7 +126,7 @@ function Delete(arr, n) {
   let i = 0;
   let j = 2 * i + 1;
   while (j <= n - 1) {
-    if (j <= n - 2 && arr[j + 1] > arr[j]) {
+    if (j <= n - 2 && arr[j + 1] >= arr[j]) {
       j = j + 1;
     }
     if (arr[i] < arr[j]) {
