@@ -125,7 +125,7 @@ function Delete(arr, n) {
   arrOfObj.push(obj1);
   let i = 0;
   let j = 2 * i + 1;
-  while (j < n - 1) {
+  while (j <= n - 1) {
     if (j <= n - 2 && arr[j + 1] > arr[j]) {
       j = j + 1;
     }
