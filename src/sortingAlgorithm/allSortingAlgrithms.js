@@ -72,7 +72,6 @@ const bubbleSort = (arr)=>{
     return {steps:passes,sortedArray:arr};
 }
 
-export { SelectionSort, bubbleSort };
 
 
 //For Heap Sort
@@ -148,5 +147,5 @@ function Delete(arr, n) {
   // return obj;
 }
 
-export { SelectionSort, bubbleSort, Heapify, Delete, HeapSort };
-export default InsertionSort;
+export { SelectionSort,  InsertionSort, bubbleSort, Heapify, Delete, HeapSort };
+

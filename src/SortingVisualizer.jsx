@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
-import InsertionSort, {
+import  {
+  InsertionSort,
   bubbleSort,
   Heapify,
   HeapSort,
-  QuickSort,
   SelectionSort
 } from "./sortingAlgorithm/allSortingAlgrithms";
 
@@ -17,8 +17,8 @@ function SortingVisualizer() {
 
   function resetArray() {
     const arr = [];
-    for (let i = 0; i < 300; i++) {
-      arr.push(randomInterval(5, 750));
+    for (let i = 0; i < 20; i++) {
+      arr.push(randomInterval(5, 100));
     }
     setArray(arr);
     // console.log("reset button clicked");
@@ -114,7 +114,12 @@ function SortingVisualizer() {
         }
 
         await sleep(20);
-
+        barOneStyle.backgroundColor="turquoise";
+        barTwoStyle.backgroundColor="turquoise";
+      }
+    }
+    setArray(sortedArray);
+  }
   //Heap Sort Visualization
   async function performHeapSort() {
     let len = array.length;
