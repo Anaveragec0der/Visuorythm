@@ -47,62 +47,33 @@ function SelectionSort(Array) {
   return arr;
 }
 
-// function QuickSort(Array, low, high) {
-//   let resultarray = [];
-//   resultarray.push(quickSort(Array, low, high));
-//   return resultarray;
-// }
 
-// function quickSort(Array, low, high) {
-//   if (low < high) {
-//     // let len = partition(Array, low, high).length;
-//     let partitionReturn = partition(Array, low, high);
-//     // console.log(partitionReturn);
-//     arr.push(partitionReturn);
-//     // let pi = partitionReturn.idx1;
-//     let pi = partition(Array, low, high).idx1;
-//     quickSort(Array, low, pi - 1);
-//     quickSort(Array, pi + 1, high);
-//     // console.log(Array);
-//     // console.log(arr);
-//     return arr;
-//   }
-// }
-// function partition(arr, start, end) {
-//   let pivot = arr[end];
-//   // let packageArray = [];
-//   // let pivotPositionPass = {};
-//   let pivotPlacingPass = {};
-//   let i = start - 1;
-//   for (let j = start; j < end; j++) {
-//     if (arr[j] <= pivot) {
-//       i++;
-//       // console.log(i + " " + j);
-//       // pivotPositionPass = {
-//       //   index1: i,
-//       //   index2: j
-//       // };
-//       // console.log(pivotPositionPass.index1);
-//       // console.log(pivotPositionPass.index2);
-//       // packageArray.push(pivotPositionPass);
-//       [arr[i], arr[j]] = [arr[j], arr[i]];
-//     }
-//   }
-//   pivotPlacingPass = {
-//     idx1: i + 1,
-//     idx2: end
-//   };
-//   // console.log(pivotPlacingPass.idx1);
-//   // console.log(pivotPlacingPass.idx2);
-//   // packageArray.push(pivotPlacingPass);
+const bubbleSort = (arr)=>{
+    const passes = [];
+    let swapped = false;
+    for(let i=0;i<arr.length;i++){
+        let itr = [];
+        for(let j=0;j<arr.length-i-1;j++){
+            itr[j] = {
+                a : j,
+                b : j+1 
+            };
+            if(arr[j]>arr[j+1]){
+                swapped=true;
+                itr[j]['swap'] = true;
+                let temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+        passes.push(itr)
+        if(!swapped)break;
+    }
+    return {steps:passes,sortedArray:arr};
+}
 
-//   // console.log(i + 1);
-//   // console.log(end);
-//   [arr[i + 1], arr[end]] = [arr[end], arr[i + 1]];
-//   // return i + 1;
-//   // return packageArray;
-//   return pivotPlacingPass;
-// }
+export { SelectionSort, bubbleSort };
+
 
 //For Heap Sort
 function HeapSort(array, len) {
@@ -177,5 +148,5 @@ function Delete(arr, n) {
   // return obj;
 }
 
-export { SelectionSort, Heapify, Delete, HeapSort };
+export { SelectionSort, bubbleSort, Heapify, Delete, HeapSort };
 export default InsertionSort;
