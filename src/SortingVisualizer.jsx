@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
 import InsertionSort, {
   bubbleSort,
+  Heapify,
+  HeapSort,
+  QuickSort,
   SelectionSort
 } from "./sortingAlgorithm/allSortingAlgrithms";
 
@@ -14,8 +17,8 @@ function SortingVisualizer() {
 
   function resetArray() {
     const arr = [];
-    for (let i = 0; i < 200; i++) {
-      arr.push(randomInterval(5, 730));
+    for (let i = 0; i < 300; i++) {
+      arr.push(randomInterval(5, 750));
     }
     setArray(arr);
     // console.log("reset button clicked");
@@ -50,12 +53,12 @@ function SortingVisualizer() {
 
         barOneStyle.backgroundColor = "red";
         barTwoStyle.backgroundColor = "red";
-        await sleep(20);
+        await sleep(70);
 
         const temp = barOneStyle.height;
         barOneStyle.height = barTwoStyle.height;
         barTwoStyle.height = temp;
-        await sleep(20);
+        await sleep(70);
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
@@ -89,6 +92,7 @@ function SortingVisualizer() {
     }
   }
 
+
   async function performBubbleSort(){
     const {steps,sortedArray} = bubbleSort(array.slice());
     for (let i = 0; i < steps.length; i++) {
@@ -111,17 +115,102 @@ function SortingVisualizer() {
 
         await sleep(20);
 
+  //Heap Sort Visualization
+  async function performHeapSort() {
+    let len = array.length;
+    // console.log(len);
+    // console.log(array);
+    let heapifiedArrayAndSwappedIndexes = Heapify(array.slice(), len);
+    let length = heapifiedArrayAndSwappedIndexes.length;
+    // console.log(heapifiedArrayAndSwappedIndexes);
+    const heapifiedArray = heapifiedArrayAndSwappedIndexes[length - 1];
+    // const heapifiedArraylength = heapifiedArray.length;
+    // console.log(heapifiedArray);
+    // let heapifiedArray2 = heapifiedArray.slice();
+    let onlyswappedIndexes = heapifiedArrayAndSwappedIndexes.slice(
+      0,
+      length - 1
+    );
+    // console.log(onlyswappedIndexes);
+    const arrayOfObject = HeapSort(heapifiedArray, heapifiedArray.length);
+
+    // animation for creation of heap
+    let lengthOfSwappedIndexesArray = onlyswappedIndexes.length;
+    for (let i = 0; i < lengthOfSwappedIndexesArray; i++) {
+      const { idx1: index1, idx2: index2 } = onlyswappedIndexes[i];
+      const arrayBars = document.getElementsByClassName("array-bar");
+      const barOneStyle = arrayBars[index1].style;
+      const barTwoStyle = arrayBars[index2].style;
+
+      barOneStyle.backgroundColor = "red";
+      barTwoStyle.backgroundColor = "red";
+      await sleep(50);
+
+      const temp = barOneStyle.height;
+      barOneStyle.height = barTwoStyle.height;
+      barTwoStyle.height = temp;
+      await sleep(50);
+
+      barOneStyle.backgroundColor = "turquoise";
+      barTwoStyle.backgroundColor = "turquoise";
+    }
+    // console.log("heap created");
+
+    // animation for Sorting
+    let lengthOfArrayOfObjects = arrayOfObject.length;
+
+    for (let i = 0; i < lengthOfArrayOfObjects; i++) {
+      const { a, b } = arrayOfObject[i][0];
+      // console.log("swapping first index with last");
+      const arrayBars = document.getElementsByClassName("array-bar");
+      const barOneStyle = arrayBars[a].style;
+      const barTwoStyle = arrayBars[b].style;
+
+      barOneStyle.backgroundColor = "red";
+      barTwoStyle.backgroundColor = "red";
+      await sleep(50);
+
+      const temp = barOneStyle.height;
+      barOneStyle.height = barTwoStyle.height;
+      barTwoStyle.height = temp;
+      await sleep(50);
+
+      barOneStyle.backgroundColor = "turquoise";
+      barTwoStyle.backgroundColor = "turquoise";
+      for (let j = 1; j < arrayOfObject[i].length; j++) {
+        // console.log("putting the swapped value in form of max heap");
+        const { index1, index2 } = arrayOfObject[i][j];
+        const arrayBars = document.getElementsByClassName("array-bar");
+        const barOneStyle = arrayBars[index1].style;
+        const barTwoStyle = arrayBars[index2].style;
+
+        barOneStyle.backgroundColor = "red";
+        barTwoStyle.backgroundColor = "red";
+        await sleep(50);
+
+        const temp = barOneStyle.height;
+        barOneStyle.height = barTwoStyle.height;
+        barTwoStyle.height = temp;
+        await sleep(50);
+
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
       }
     }
     setArray(sortedArray);
+
   }
 
   //display original array in the console
   function ShowArray() {
     console.log(array);
   }
+  //QuickSort Visualization
+  async function performQuickSort() {
+    const objectArray = QuickSort(array, 0, array.length - 1);
+  }
+
+  //Heap Sort Visualization
 
   return (
     <div>
@@ -138,8 +227,10 @@ function SortingVisualizer() {
         <br />
         <button onClick={generateNewArray}> Generate New Array </button>
         <button onClick={performInsertionSort}>Insertion Sort</button>
-        <button onClick={performSelectionSort}> Selection Sort</button>
         <button onClick={performBubbleSort}>Bubble Sort</button>
+        <button onClick={performSelectionSort}>Selection Sort</button>
+        <button onClick={performQuickSort}>Quick Sort</button>
+        <button onClick={performHeapSort}>Heap Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
       </div>
     </div>
