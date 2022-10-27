@@ -1,11 +1,28 @@
 .array-container {
-  position: absolute;
-  left: 100px;
+  height: 60vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 5% 2% 2%;
 }
 
 .array-bar {
-  width: 3px;
+  width: 7px;
   background-color: turquoise;
   display: inline-block;
-  margin: 0 1px;
+  margin: 0 2px;
+}
+
+@media only screen and (max-width: 600px) {
+  .array-bar {
+    width: 4px;
+  }
+}
+
+.array-bar.active{
+  background: orangered;
+}
+
+.array-bar.copiedposition{
+  background: cornflowerblue;
 }

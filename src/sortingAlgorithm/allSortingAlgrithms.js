@@ -147,5 +147,130 @@ function Delete(arr, n) {
   // return obj;
 }
 
-export { SelectionSort,  InsertionSort, bubbleSort, Heapify, Delete, HeapSort };
+const mergeSort = (array)=>{
+  const steps=[];
+  divideAndMerge(array,0,array.length,steps)
+  return {steps:steps,sortedArray:array};
+}
+
+const divideAndMerge = (array, start, end,steps)=>{
+  if(end-start<2)return;
+  let mid  = parseInt((start+end)/2);
+  divideAndMerge(array,start,mid,steps);
+  divideAndMerge(array,mid,end,steps);
+  merge(array,start,mid,end,steps);
+}
+
+const merge = (array,start,mid,end,steps)=>{
+  if(array[mid-1]<=array[mid]) return;
+  let i=start, j=mid, k=start;
+  const tmpArray = [];
+  const itr = [];
+  while(i<mid&&j<end){
+      itr.push({
+          a:i,
+          b:j,
+          copy:{
+              val:array[i]<=array[j]?array[i]:array[j],
+              pos:k++
+          }
+      })
+      if(array[i]<=array[j]){
+          tmpArray.push(array[i++]);
+      }
+      else{
+          tmpArray.push(array[j++]);
+      }
+  }
+
+  while(i<mid){
+      itr.push({
+          a:i,
+          b:j,
+          copy:{
+              val: array[i],
+              pos:k++
+          }
+      })
+      tmpArray.push(array[i++]);
+  }
+
+  while(j<end){
+      itr.push({
+          a:j,
+          b:i,
+          copy:{
+              val: array[j],
+              pos:k++
+          }
+      })
+      tmpArray.push(array[j++]);
+  }
+  for(k=0;k<tmpArray.length;k++){
+      array[start+k] = tmpArray[k];
+  }
+  steps.push(itr);
+}
+
+const quickSort = (array)=>{
+  const steps=[];
+  partitionAndSort(array, 0, array.length-1,steps);
+  return {steps:steps,sortedArray:array};
+}
+
+const partitionAndSort = (array, lowIndex, highIndex,steps) =>{
+  const itr = [];
+  if(lowIndex>=highIndex)return;
+  const pivotIndex = lowIndex + Math.floor(Math.random()*(highIndex-lowIndex));
+  const pivot = array[pivotIndex];
+  let step = {
+      a: pivotIndex,
+      b: highIndex,
+      swap: true
+  }
+  itr.push(step);
+  [array[pivotIndex],array[highIndex]] = [array[highIndex],array[pivotIndex]];
+  let leftPointer = lowIndex;
+  let rightPointer = highIndex;
+
+  while(leftPointer < rightPointer){
+      while(array[leftPointer] <= pivot && leftPointer < rightPointer){
+          step = {
+              a: leftPointer,
+              b:rightPointer
+          }
+          itr.push(step);
+          leftPointer++;
+      }
+
+      while(array[rightPointer] >= pivot && leftPointer < rightPointer){
+          step = {
+              a: rightPointer,
+              b:leftPointer
+          }
+          itr.push(step);
+          rightPointer--;
+      }
+      step = {
+          a: leftPointer,
+          b: rightPointer,
+          swap: true
+      }
+      itr.push(step);
+      [array[leftPointer],array[rightPointer]] = [array[rightPointer],array[leftPointer]];
+  }
+  step = {
+      a:leftPointer,
+      b:highIndex,
+      swap: true
+  }
+  itr.push(step);
+  [array[leftPointer],array[highIndex]] = [array[highIndex],array[leftPointer]];
+  steps.push(itr);
+
+  partitionAndSort(array, lowIndex, leftPointer-1,steps);
+  partitionAndSort(array, leftPointer+1, highIndex,steps);
+}
+
+export { SelectionSort,  InsertionSort, bubbleSort, Heapify, Delete, HeapSort, mergeSort, quickSort};
 

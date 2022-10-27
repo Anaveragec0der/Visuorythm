@@ -5,7 +5,9 @@ import  {
   bubbleSort,
   Heapify,
   HeapSort,
-  SelectionSort
+  SelectionSort,
+  mergeSort,
+  quickSort
 } from "./sortingAlgorithm/allSortingAlgrithms";
 
 function SortingVisualizer() {
@@ -15,10 +17,15 @@ function SortingVisualizer() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  window.onresize = resetArray;
+
   function resetArray() {
     const arr = [];
-    for (let i = 0; i < 20; i++) {
-      arr.push(randomInterval(5, 100));
+    const arrayBar = document.querySelector('.array-bar');
+    const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
+    const maxBars = (window.innerWidth/2)/effectiveSize;
+    for (let i = 0; i < maxBars; i++) {
+      arr.push(randomInterval(20, 400));
     }
     setArray(arr);
     // console.log("reset button clicked");
@@ -206,13 +213,89 @@ function SortingVisualizer() {
 
   }
 
+  async function performMergeSort() {
+    let {steps,sortedArray} = mergeSort(array.slice());
+    for(let i=0;i<steps.length;i++){
+      for(let j=0;j<steps[i].length;j++){
+          let a = document.getElementById(steps[i][j].a);
+          let c = document.getElementById(steps[i][j].copy.pos);
+          let b = document.getElementById(steps[i][j].b);
+          a.classList.toggle('active');
+          b?.classList.toggle('active');
+          c.classList.toggle('copiedposition');
+          await sleep(30);
+          c.style.height = `${steps[i][j].copy.val}px`;
+          await sleep(30);
+          a.classList.toggle('active');
+          b?.classList.toggle('active');
+          c.classList.toggle('copiedposition');
+      }
+    }
+    setArray(sortedArray);
+  }
+
   //display original array in the console
   function ShowArray() {
     console.log(array);
   }
+
   //QuickSort Visualization
   async function performQuickSort() {
-    const objectArray = QuickSort(array, 0, array.length - 1);
+    let {steps,sortedArray} = quickSort(array.slice());
+    for(let i =0;i<steps.length;i++){
+      for(let j=0;j<steps[i].length;j++){
+        if(j===0){
+          const highIndex = document.getElementById(steps[i][j].b);
+          const pivot = document.getElementById(steps[i][j].a);
+          pivot.classList.toggle('copiedposition');
+          await sleep(30);
+          highIndex.classList.toggle('active');
+          await sleep(30);
+          const tmp = highIndex.style.height;
+          highIndex.style.height = pivot.style.height;
+          pivot.style.height = tmp;
+          pivot.classList.toggle('copiedposition');
+          pivot.classList.toggle('active')
+          highIndex.classList.toggle('active');
+          highIndex.classList.toggle('copiedposition');
+          await sleep(30);
+          pivot.classList.toggle('active');
+          await sleep(30);
+          continue;
+        }
+        if(j===steps[i].length-1){
+          const a = document.getElementById(steps[i][j].a);
+          const b = document.getElementById(steps[i][j].b);
+          a.classList.toggle('active');
+          await sleep(30);
+          const tmp = b.style.height;
+          b.style.height = a.style.height;
+          a.style.height = tmp;
+          await sleep(30);
+          a.classList.toggle('active');
+          b.classList.toggle('copiedposition');
+          a.classList.toggle('copiedposition');
+          await sleep(30);
+          a.classList.toggle('copiedposition');
+          continue;
+        }
+        let a,b;
+        a = document.getElementById(steps[i][j].a);
+        b = document.getElementById(steps[i][j].b);
+        a.classList.toggle('active');
+        b.classList.toggle('active');
+        if(steps[i][j].swap){
+          await sleep(30);
+          const tmp = a.style.height;
+          a.style.height = b.style.height;
+          b.style.height = tmp;
+        }
+        await sleep(30);
+        a.classList.toggle('active');
+        b.classList.toggle('active');
+      }
+    }
+    setArray(sortedArray);
   }
 
   //Heap Sort Visualization
@@ -220,24 +303,28 @@ function SortingVisualizer() {
   return (
     <div>
       <div className="array-container">
+        <div className="array-bar" style={{visibility:'hidden'}}></div>
         {array.map((value, index) => (
           <div
             className="array-bar"
             key={index}
+            id={index}
             style={{ height: `${value}px` }}
           >
             {" "}
           </div>
         ))}
         <br />
+        </div>
         <button onClick={generateNewArray}> Generate New Array </button>
         <button onClick={performInsertionSort}>Insertion Sort</button>
         <button onClick={performBubbleSort}>Bubble Sort</button>
         <button onClick={performSelectionSort}>Selection Sort</button>
         <button onClick={performQuickSort}>Quick Sort</button>
         <button onClick={performHeapSort}>Heap Sort</button>
+        <button onClick={performMergeSort}>Merge Sort</button>
+        <button onClick={performQuickSort}>Quick Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
-      </div>
     </div>
   );
 }
