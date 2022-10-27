@@ -23,16 +23,11 @@ function SortingVisualizer() {
 
   function resetArray() {
     const arr = [];
-<<<<<<< HEAD
     const arrayBar = document.querySelector('.array-bar');
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
     const maxBars = (window.innerWidth/2)/effectiveSize;
     for (let i = 0; i < maxBars; i++) {
       arr.push(randomInterval(20, 400));
-=======
-    for (let i = 0; i < 100; i++) {
-      arr.push(randomInterval(5, 750));
->>>>>>> 89bf1a5 (pause button added)
     }
     setArray(arr);
     // console.log("reset button clicked");
@@ -237,6 +232,8 @@ function SortingVisualizer() {
   }
 
   async function performMergeSort() {
+    setHidden(true);
+    setPause(false);
     let {steps,sortedArray} = mergeSort(array.slice());
     for(let i=0;i<steps.length;i++){
       for(let j=0;j<steps[i].length;j++){
@@ -254,6 +251,8 @@ function SortingVisualizer() {
           c.classList.toggle('copiedposition');
       }
     }
+    setHidden(false);
+    setPause(true);
     setArray(sortedArray);
   }
 
@@ -264,6 +263,8 @@ function SortingVisualizer() {
 
   //QuickSort Visualization
   async function performQuickSort() {
+    setHidden(true);
+    setPause(false);
     let {steps,sortedArray} = quickSort(array.slice());
     for(let i =0;i<steps.length;i++){
       for(let j=0;j<steps[i].length;j++){
@@ -318,11 +319,12 @@ function SortingVisualizer() {
         b.classList.toggle('active');
       }
     }
+    setHidden(false);
+    setPause(true);
     setArray(sortedArray);
   }
 
-  //Heap Sort Visualization
-
+  
   return (
     <div>
       <div className="array-container">
@@ -338,28 +340,16 @@ function SortingVisualizer() {
           </div>
         ))}
         <br />
-<<<<<<< HEAD
-        </div>
-        <button onClick={generateNewArray}> Generate New Array </button>
-        <button onClick={performInsertionSort}>Insertion Sort</button>
-        <button onClick={performBubbleSort}>Bubble Sort</button>
-        <button onClick={performSelectionSort}>Selection Sort</button>
-        <button onClick={performQuickSort}>Quick Sort</button>
-        <button onClick={performHeapSort}>Heap Sort</button>
-        <button onClick={performMergeSort}>Merge Sort</button>
-        <button onClick={performQuickSort}>Quick Sort</button>
-        <button onClick={ShowArray}> Show Original Array </button>
-=======
         <button onClick={generateNewArray} hidden={isHidden}> Generate New Array </button>
         <button onClick={performInsertionSort} hidden={isHidden}>Insertion Sort</button>
         <button onClick={performBubbleSort} hidden={isHidden}>Bubble Sort</button>
         <button onClick={performSelectionSort} hidden={isHidden}>Selection Sort</button>
         <button onClick={performQuickSort} hidden={isHidden}>Quick Sort</button>
         <button onClick={performHeapSort} hidden={isHidden}>Heap Sort</button>
+        <button onclick={performMergeSort} hidden={isHidden}>Merge Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
         <button hidden={pauseHidden}> Pause </button>
       </div>
->>>>>>> 89bf1a5 (pause button added)
     </div>
   );
 }
