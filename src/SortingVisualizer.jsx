@@ -23,7 +23,7 @@ function SortingVisualizer() {
 
   function resetArray() {
     const arr = [];
-    const arrayBar = document.querySelector('.array-bar');
+    const arrayBar = document.getElementById("sample");
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
     const maxBars = (window.innerWidth/2)/effectiveSize;
     for (let i = 0; i < maxBars; i++) {
@@ -328,7 +328,7 @@ function SortingVisualizer() {
   return (
     <div>
       <div className="array-container">
-        <div className="array-bar" style={{visibility:'hidden'}}></div>
+       
         {array.map((value, index) => (
           <div
             className="array-bar"
@@ -340,16 +340,17 @@ function SortingVisualizer() {
           </div>
         ))}
         <br />
-        <button onClick={generateNewArray} hidden={isHidden}> Generate New Array </button>
+        <div className="array-bar" style={{visibility:'hidden'}} id="sample"></div>
+      </div>
+      <button onClick={generateNewArray} hidden={isHidden}> Generate New Array </button>
         <button onClick={performInsertionSort} hidden={isHidden}>Insertion Sort</button>
         <button onClick={performBubbleSort} hidden={isHidden}>Bubble Sort</button>
         <button onClick={performSelectionSort} hidden={isHidden}>Selection Sort</button>
         <button onClick={performQuickSort} hidden={isHidden}>Quick Sort</button>
         <button onClick={performHeapSort} hidden={isHidden}>Heap Sort</button>
-        <button onclick={performMergeSort} hidden={isHidden}>Merge Sort</button>
+        <button onClick={performMergeSort} hidden={isHidden}>Merge Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
         <button hidden={pauseHidden}> Pause </button>
-      </div>
     </div>
   );
 }
