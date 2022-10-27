@@ -12,6 +12,8 @@ import  {
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
+  const [isHidden, setHidden]=useState(false);
+  const [pauseHidden, setPause]=useState(true);
 
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -21,11 +23,16 @@ function SortingVisualizer() {
 
   function resetArray() {
     const arr = [];
+<<<<<<< HEAD
     const arrayBar = document.querySelector('.array-bar');
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
     const maxBars = (window.innerWidth/2)/effectiveSize;
     for (let i = 0; i < maxBars; i++) {
       arr.push(randomInterval(20, 400));
+=======
+    for (let i = 0; i < 100; i++) {
+      arr.push(randomInterval(5, 750));
+>>>>>>> 89bf1a5 (pause button added)
     }
     setArray(arr);
     // console.log("reset button clicked");
@@ -45,8 +52,10 @@ function SortingVisualizer() {
     resetArray();
   }
 
-  //Inserion Sort Visualization
+  //Insertion Sort Visualization
   async function performInsertionSort() {
+    setHidden(true);
+    setPause(false);
     const objectArray = InsertionSort(array.slice());
     // console.log(objectArray);
     for (let i = 0; i < objectArray.length; i++) {
@@ -71,10 +80,14 @@ function SortingVisualizer() {
         barTwoStyle.backgroundColor = "turquoise";
       }
     }
+    setHidden(false);
+    setPause(true);
   }
 
   //Selection Sort Visualization
   async function performSelectionSort() {
+    setHidden(true);
+    setPause(false);
     const objectArray = SelectionSort(array.slice());
 
     for (let i = 0; i < objectArray.length; i++) {
@@ -97,10 +110,14 @@ function SortingVisualizer() {
         barTwoStyle.backgroundColor = "turquoise";
       }
     }
+    setHidden(false);
+    setPause(true);
   }
 
 
   async function performBubbleSort(){
+    setHidden(true);
+    setPause(false);
     const {steps,sortedArray} = bubbleSort(array.slice());
     for (let i = 0; i < steps.length; i++) {
       for (let j = 0; j < steps[i].length; j++) {
@@ -126,9 +143,13 @@ function SortingVisualizer() {
       }
     }
     setArray(sortedArray);
+    setHidden(false);
+    setPause(true);
   }
   //Heap Sort Visualization
   async function performHeapSort() {
+    setHidden(true);
+    setPause(false);
     let len = array.length;
     // console.log(len);
     // console.log(array);
@@ -156,17 +177,17 @@ function SortingVisualizer() {
 
       barOneStyle.backgroundColor = "red";
       barTwoStyle.backgroundColor = "red";
-      await sleep(50);
+      await sleep(25);
 
       const temp = barOneStyle.height;
       barOneStyle.height = barTwoStyle.height;
       barTwoStyle.height = temp;
-      await sleep(50);
+      await sleep(25);
 
       barOneStyle.backgroundColor = "turquoise";
       barTwoStyle.backgroundColor = "turquoise";
     }
-    // console.log("heap created");
+    console.log("heap created");
 
     // animation for Sorting
     let lengthOfArrayOfObjects = arrayOfObject.length;
@@ -180,12 +201,12 @@ function SortingVisualizer() {
 
       barOneStyle.backgroundColor = "red";
       barTwoStyle.backgroundColor = "red";
-      await sleep(50);
+      await sleep(25);
 
       const temp = barOneStyle.height;
       barOneStyle.height = barTwoStyle.height;
       barTwoStyle.height = temp;
-      await sleep(50);
+      await sleep(25);
 
       barOneStyle.backgroundColor = "turquoise";
       barTwoStyle.backgroundColor = "turquoise";
@@ -208,9 +229,11 @@ function SortingVisualizer() {
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
       }
+      
     }
+    setHidden(false);
+    setPause(true);
     setArray(sortedArray);
-
   }
 
   async function performMergeSort() {
@@ -315,6 +338,7 @@ function SortingVisualizer() {
           </div>
         ))}
         <br />
+<<<<<<< HEAD
         </div>
         <button onClick={generateNewArray}> Generate New Array </button>
         <button onClick={performInsertionSort}>Insertion Sort</button>
@@ -325,6 +349,17 @@ function SortingVisualizer() {
         <button onClick={performMergeSort}>Merge Sort</button>
         <button onClick={performQuickSort}>Quick Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
+=======
+        <button onClick={generateNewArray} hidden={isHidden}> Generate New Array </button>
+        <button onClick={performInsertionSort} hidden={isHidden}>Insertion Sort</button>
+        <button onClick={performBubbleSort} hidden={isHidden}>Bubble Sort</button>
+        <button onClick={performSelectionSort} hidden={isHidden}>Selection Sort</button>
+        <button onClick={performQuickSort} hidden={isHidden}>Quick Sort</button>
+        <button onClick={performHeapSort} hidden={isHidden}>Heap Sort</button>
+        <button onClick={ShowArray}> Show Original Array </button>
+        <button hidden={pauseHidden}> Pause </button>
+      </div>
+>>>>>>> 89bf1a5 (pause button added)
     </div>
   );
 }
