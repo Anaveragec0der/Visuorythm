@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
-import  {
-  InsertionSort,
-  bubbleSort,
-  Heapify,
-  HeapSort,
-  SelectionSort,
-  mergeSort,
-  quickSort
-} from "./sortingAlgorithm/allSortingAlgrithms";
+import {
+  performBubbleSort,
+  performHeapSort,
+  performInsertionSort,
+  performMergeSort,
+  performQuickSort,
+  performSelectionSort
+} from "./performSortings"
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
@@ -30,230 +29,15 @@ function SortingVisualizer() {
       arr.push(randomInterval(20, 400));
     }
     setArray(arr);
-    // console.log("reset button clicked");
   }
+
   useEffect(() => {
     resetArray();
   }, []);
 
-  //helper function to perform animation
-  const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
   //for generating new array
   function generateNewArray() {
-    // console.log("clicked");
     resetArray();
-  }
-
-  //Insertion Sort Visualization
-  async function performInsertionSort() {
-    setHidden(true);
-    setPause(false);
-    const objectArray = InsertionSort(array.slice());
-    // console.log(objectArray);
-    for (let i = 0; i < objectArray.length; i++) {
-      for (let j = 0; j < objectArray[i].length; j++) {
-        // console.log(objectArray[i][j]);
-        const { a: idx1, b: idx2 } = objectArray[i][j];
-        // console.log(idx1 + " " + idx2 + " " + swap);
-        const arrayBars = document.getElementsByClassName("array-bar");
-        const barOneStyle = arrayBars[idx1].style;
-        const barTwoStyle = arrayBars[idx2].style;
-
-        barOneStyle.backgroundColor = "red";
-        barTwoStyle.backgroundColor = "red";
-        await sleep(70);
-
-        const temp = barOneStyle.height;
-        barOneStyle.height = barTwoStyle.height;
-        barTwoStyle.height = temp;
-        await sleep(70);
-
-        barOneStyle.backgroundColor = "turquoise";
-        barTwoStyle.backgroundColor = "turquoise";
-      }
-    }
-    setHidden(false);
-    setPause(true);
-  }
-
-  //Selection Sort Visualization
-  async function performSelectionSort() {
-    setHidden(true);
-    setPause(false);
-    const objectArray = SelectionSort(array.slice());
-
-    for (let i = 0; i < objectArray.length; i++) {
-      for (let j = 0; j < objectArray[i].length; j++) {
-        const { a: idx1, b: idx2 } = objectArray[i][j];
-        const arrayBars = document.getElementsByClassName("array-bar");
-        const barOneStyle = arrayBars[idx1].style;
-        const barTwoStyle = arrayBars[idx2].style;
-
-        barOneStyle.backgroundColor = "red";
-        barTwoStyle.backgroundColor = "red";
-        await sleep(50);
-
-        const temp = barOneStyle.height;
-        barOneStyle.height = barTwoStyle.height;
-        barTwoStyle.height = temp;
-        await sleep(50);
-
-        barOneStyle.backgroundColor = "turquoise";
-        barTwoStyle.backgroundColor = "turquoise";
-      }
-    }
-    setHidden(false);
-    setPause(true);
-  }
-
-
-  async function performBubbleSort(){
-    setHidden(true);
-    setPause(false);
-    const {steps,sortedArray} = bubbleSort(array.slice());
-    for (let i = 0; i < steps.length; i++) {
-      for (let j = 0; j < steps[i].length; j++) {
-        // console.log(objectArray[i][j]);
-        const { a: idx1, b: idx2 } = steps[i][j];
-        const arrayBars = document.getElementsByClassName("array-bar");
-        const barOneStyle = arrayBars[idx1].style;
-        const barTwoStyle = arrayBars[idx2].style;
-
-        barOneStyle.backgroundColor = "red";
-        barTwoStyle.backgroundColor = "red";
-        await sleep(20);
-
-        if(steps[i][j].swap){
-          const temp = barOneStyle.height;
-          barOneStyle.height = barTwoStyle.height;
-          barTwoStyle.height = temp;
-        }
-
-        await sleep(20);
-        barOneStyle.backgroundColor="turquoise";
-        barTwoStyle.backgroundColor="turquoise";
-      }
-    }
-    setArray(sortedArray);
-    setHidden(false);
-    setPause(true);
-  }
-  //Heap Sort Visualization
-  async function performHeapSort() {
-    setHidden(true);
-    setPause(false);
-    let len = array.length;
-    // console.log(len);
-    // console.log(array);
-    let heapifiedArrayAndSwappedIndexes = Heapify(array.slice(), len);
-    let length = heapifiedArrayAndSwappedIndexes.length;
-    // console.log(heapifiedArrayAndSwappedIndexes);
-    const heapifiedArray = heapifiedArrayAndSwappedIndexes[length - 1];
-    // const heapifiedArraylength = heapifiedArray.length;
-    // console.log(heapifiedArray);
-    // let heapifiedArray2 = heapifiedArray.slice();
-    let onlyswappedIndexes = heapifiedArrayAndSwappedIndexes.slice(
-      0,
-      length - 1
-    );
-    // console.log(onlyswappedIndexes);
-    const arrayOfObject = HeapSort(heapifiedArray, heapifiedArray.length);
-
-    // animation for creation of heap
-    let lengthOfSwappedIndexesArray = onlyswappedIndexes.length;
-    for (let i = 0; i < lengthOfSwappedIndexesArray; i++) {
-      const { idx1: index1, idx2: index2 } = onlyswappedIndexes[i];
-      const arrayBars = document.getElementsByClassName("array-bar");
-      const barOneStyle = arrayBars[index1].style;
-      const barTwoStyle = arrayBars[index2].style;
-
-      barOneStyle.backgroundColor = "red";
-      barTwoStyle.backgroundColor = "red";
-      await sleep(25);
-
-      const temp = barOneStyle.height;
-      barOneStyle.height = barTwoStyle.height;
-      barTwoStyle.height = temp;
-      await sleep(25);
-
-      barOneStyle.backgroundColor = "turquoise";
-      barTwoStyle.backgroundColor = "turquoise";
-    }
-    console.log("heap created");
-
-    // animation for Sorting
-    let lengthOfArrayOfObjects = arrayOfObject.length;
-
-    for (let i = 0; i < lengthOfArrayOfObjects; i++) {
-      const { a, b } = arrayOfObject[i][0];
-      // console.log("swapping first index with last");
-      const arrayBars = document.getElementsByClassName("array-bar");
-      const barOneStyle = arrayBars[a].style;
-      const barTwoStyle = arrayBars[b].style;
-
-      barOneStyle.backgroundColor = "red";
-      barTwoStyle.backgroundColor = "red";
-      await sleep(25);
-
-      const temp = barOneStyle.height;
-      barOneStyle.height = barTwoStyle.height;
-      barTwoStyle.height = temp;
-      await sleep(25);
-
-      barOneStyle.backgroundColor = "turquoise";
-      barTwoStyle.backgroundColor = "turquoise";
-      for (let j = 1; j < arrayOfObject[i].length; j++) {
-        // console.log("putting the swapped value in form of max heap");
-        const { index1, index2 } = arrayOfObject[i][j];
-        const arrayBars = document.getElementsByClassName("array-bar");
-        const barOneStyle = arrayBars[index1].style;
-        const barTwoStyle = arrayBars[index2].style;
-
-        barOneStyle.backgroundColor = "red";
-        barTwoStyle.backgroundColor = "red";
-        await sleep(50);
-
-        const temp = barOneStyle.height;
-        barOneStyle.height = barTwoStyle.height;
-        barTwoStyle.height = temp;
-        await sleep(50);
-
-        barOneStyle.backgroundColor = "turquoise";
-        barTwoStyle.backgroundColor = "turquoise";
-      }
-      
-    }
-    setHidden(false);
-    setPause(true);
-    setArray(sortedArray);
-  }
-
-  async function performMergeSort() {
-    setHidden(true);
-    setPause(false);
-    let {steps,sortedArray} = mergeSort(array.slice());
-    for(let i=0;i<steps.length;i++){
-      for(let j=0;j<steps[i].length;j++){
-          let a = document.getElementById(steps[i][j].a);
-          let c = document.getElementById(steps[i][j].copy.pos);
-          let b = document.getElementById(steps[i][j].b);
-          a.classList.toggle('active');
-          b?.classList.toggle('active');
-          c.classList.toggle('copiedposition');
-          await sleep(30);
-          c.style.height = `${steps[i][j].copy.val}px`;
-          await sleep(30);
-          a.classList.toggle('active');
-          b?.classList.toggle('active');
-          c.classList.toggle('copiedposition');
-      }
-    }
-    setHidden(false);
-    setPause(true);
-    setArray(sortedArray);
   }
 
   //display original array in the console
@@ -261,70 +45,14 @@ function SortingVisualizer() {
     console.log(array);
   }
 
-  //QuickSort Visualization
-  async function performQuickSort() {
+  async function performSort(sort){
     setHidden(true);
     setPause(false);
-    let {steps,sortedArray} = quickSort(array.slice());
-    for(let i =0;i<steps.length;i++){
-      for(let j=0;j<steps[i].length;j++){
-        if(j===0){
-          const highIndex = document.getElementById(steps[i][j].b);
-          const pivot = document.getElementById(steps[i][j].a);
-          pivot.classList.toggle('copiedposition');
-          await sleep(30);
-          highIndex.classList.toggle('active');
-          await sleep(30);
-          const tmp = highIndex.style.height;
-          highIndex.style.height = pivot.style.height;
-          pivot.style.height = tmp;
-          pivot.classList.toggle('copiedposition');
-          pivot.classList.toggle('active')
-          highIndex.classList.toggle('active');
-          highIndex.classList.toggle('copiedposition');
-          await sleep(30);
-          pivot.classList.toggle('active');
-          await sleep(30);
-          continue;
-        }
-        if(j===steps[i].length-1){
-          const a = document.getElementById(steps[i][j].a);
-          const b = document.getElementById(steps[i][j].b);
-          a.classList.toggle('active');
-          await sleep(30);
-          const tmp = b.style.height;
-          b.style.height = a.style.height;
-          a.style.height = tmp;
-          await sleep(30);
-          a.classList.toggle('active');
-          b.classList.toggle('copiedposition');
-          a.classList.toggle('copiedposition');
-          await sleep(30);
-          a.classList.toggle('copiedposition');
-          continue;
-        }
-        let a,b;
-        a = document.getElementById(steps[i][j].a);
-        b = document.getElementById(steps[i][j].b);
-        a.classList.toggle('active');
-        b.classList.toggle('active');
-        if(steps[i][j].swap){
-          await sleep(30);
-          const tmp = a.style.height;
-          a.style.height = b.style.height;
-          b.style.height = tmp;
-        }
-        await sleep(30);
-        a.classList.toggle('active');
-        b.classList.toggle('active');
-      }
-    }
+    await sort(array,setArray);
     setHidden(false);
     setPause(true);
-    setArray(sortedArray);
   }
 
-  
   return (
     <div>
       <div className="array-container">
@@ -340,17 +68,23 @@ function SortingVisualizer() {
           </div>
         ))}
         <br />
-        <div className="array-bar" style={{visibility:'hidden'}} id="sample"></div>
+        <div className="array-bar" style={{visibility:'hidden',height:'0px'}} id="sample"></div>
       </div>
-      <button onClick={generateNewArray} hidden={isHidden}> Generate New Array </button>
-        <button onClick={performInsertionSort} hidden={isHidden}>Insertion Sort</button>
-        <button onClick={performBubbleSort} hidden={isHidden}>Bubble Sort</button>
-        <button onClick={performSelectionSort} hidden={isHidden}>Selection Sort</button>
-        <button onClick={performQuickSort} hidden={isHidden}>Quick Sort</button>
-        <button onClick={performHeapSort} hidden={isHidden}>Heap Sort</button>
-        <button onClick={performMergeSort} hidden={isHidden}>Merge Sort</button>
+      {
+        !isHidden&&(
+          <>
+        <button onClick={generateNewArray}> Generate New Array </button>
+        <button onClick={()=>performSort(performInsertionSort)}>Insertion Sort</button>
+        <button onClick={()=>performSort(performBubbleSort)}>Bubble Sort</button>
+        <button onClick={()=>performSort(performSelectionSort)}>Selection Sort</button>
+        <button onClick={()=>performSort(performQuickSort)}>Quick Sort</button>
+        <button onClick={()=>performSort(performHeapSort)}>Heap Sort</button>
+        <button onClick={()=>performSort(performMergeSort)}>Merge Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
-        <button hidden={pauseHidden}> Pause </button>
+          </>
+        )
+      }
+        {!pauseHidden&&<button> Pause </button>}
     </div>
   );
 }
