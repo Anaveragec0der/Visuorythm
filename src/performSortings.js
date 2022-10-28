@@ -14,30 +14,46 @@ import  {
   };  
   
   //Insertion Sort Visualization
-  async function performInsertionSort(array, setArray) {
+  async function performInsertionSort(array,setArray,iState,jState,setIState,setJState){
+    
+    let temp1=false;
+    document.getElementById("pauseButton").addEventListener("click",()=>
+    {temp1=!temp1;});
     const objectArray = InsertionSort(array.slice());
     // console.log(objectArray);
-    for (let i = 0; i < objectArray.length; i++) {
-      for (let j = 0; j < objectArray[i].length; j++) {
+    let j = jState
+    for (let i = iState; i < objectArray.length; i++) {
+      for (; j < objectArray[i].length; j++) {
+   
         // console.log(objectArray[i][j]);
-        const { a: idx1, b: idx2 } = objectArray[i][j];
+        const { a,b } = objectArray[i][j];
         // console.log(idx1 + " " + idx2 + " " + swap);
         const arrayBars = document.getElementsByClassName("array-bar");
-        const barOneStyle = arrayBars[idx1].style;
-        const barTwoStyle = arrayBars[idx2].style;
+        const barOneStyle = arrayBars[a].style;
+        const barTwoStyle = arrayBars[b].style;
 
         barOneStyle.backgroundColor = "red";
         barTwoStyle.backgroundColor = "red";
-        await sleep(70);
+        await sleep(50);
 
         const temp = barOneStyle.height;
         barOneStyle.height = barTwoStyle.height;
         barTwoStyle.height = temp;
-        await sleep(70);
+        await sleep(50);
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
+     
+        if(temp1){
+          setJState(j+1);
+          break;
+        }
       }
+      if(temp1){
+        setIState(i);
+        break;
+      }
+      j=0;
     }
   }
 
@@ -67,34 +83,56 @@ import  {
     }
   }
 
+//Bubble sort Visualization
+async function performBubbleSort(array,setArray,iState,jState,setIState,setJState){
+  let temp1=false;
+  document.getElementById("pauseButton").addEventListener("click",()=>
+  {temp1=!temp1;});
+  console.time("start")
+  const {steps,sortedArray} = bubbleSort(array.slice());
+  console.timeEnd("start");
+  console.log(steps);
+ 
+  let j=jState;
+  for ( let i=iState; i < steps.length; i++) {
+    for (  ; j < steps[i].length; j++) {
+      // console.log(objectArray[i][j]);
+      console.log(i,j);
+      const { a: idx1, b: idx2 } = steps[i][j];
+      const arrayBars = document.getElementsByClassName("array-bar");
+      const barOneStyle = arrayBars[idx1].style;
+      const barTwoStyle = arrayBars[idx2].style;
 
-  async function performBubbleSort(array, setArray){
-    const {steps,sortedArray} = bubbleSort(array.slice());
-    for (let i = 0; i < steps.length; i++) {
-      for (let j = 0; j < steps[i].length; j++) {
-        // console.log(objectArray[i][j]);
-        const { a: idx1, b: idx2 } = steps[i][j];
-        const arrayBars = document.getElementsByClassName("array-bar");
-        const barOneStyle = arrayBars[idx1].style;
-        const barTwoStyle = arrayBars[idx2].style;
+      barOneStyle.backgroundColor = "red";
+      barTwoStyle.backgroundColor = "red";
+      await sleep(20);
 
-        barOneStyle.backgroundColor = "red";
-        barTwoStyle.backgroundColor = "red";
-        await sleep(20);
-
-        if(steps[i][j].swap){
-          const temp = barOneStyle.height;
-          barOneStyle.height = barTwoStyle.height;
-          barTwoStyle.height = temp;
-        }
-
-        await sleep(20);
-        barOneStyle.backgroundColor="turquoise";
-        barTwoStyle.backgroundColor="turquoise";
+      if(steps[i][j].swap){
+        const temp = barOneStyle.height;
+        barOneStyle.height = barTwoStyle.height;
+        barTwoStyle.height = temp;
       }
+
+      await sleep(20);
+      barOneStyle.backgroundColor="turquoise";
+      barTwoStyle.backgroundColor="turquoise";
+      if(temp1){
+        // console.log(temp1);
+        setJState(j+1);
+        break;
+      }
+      
     }
-    setArray(sortedArray);
+    if(temp1){
+      setIState(i);
+      break;
+    }
+    j=0;
   }
+  // setArray(sortedArray);
+}
+
+
   //Heap Sort Visualization
   async function performHeapSort(array, setArray) {
     let len = array.length;
@@ -180,6 +218,8 @@ import  {
     }
     setArray(sortedArray);
   }
+
+//Merge Sort Visualization
 
   async function performMergeSort(array, setArray) {
     let {steps,sortedArray} = mergeSort(array.slice());

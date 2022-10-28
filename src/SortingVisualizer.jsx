@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
+import { InsertionSort } from "./sortingAlgorithm/allSortingAlgrithms";
 import {
   performBubbleSort,
   performHeapSort,
@@ -13,6 +14,8 @@ function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [isHidden, setHidden]=useState(false);
   const [pauseHidden, setPause]=useState(true);
+  const[iState,setIState]=useState(0);
+  const[jState,setJState]=useState(0);
 
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -35,6 +38,10 @@ function SortingVisualizer() {
     resetArray();
   }, []);
 
+  const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };  
+  
   //for generating new array
   function generateNewArray() {
     resetArray();
@@ -45,12 +52,13 @@ function SortingVisualizer() {
     console.log(array);
   }
 
-  async function performSort(sort){
+
+
+ 
+  async function performSort(sort,nameOfAlgo){
     setHidden(true);
-    setPause(false);
-    await sort(array,setArray);
+    await sort(array,setArray,iState,jState,setIState,setJState);
     setHidden(false);
-    setPause(true);
   }
 
   return (
@@ -74,8 +82,8 @@ function SortingVisualizer() {
         !isHidden&&(
           <>
         <button onClick={generateNewArray}> Generate New Array </button>
-        <button onClick={()=>performSort(performInsertionSort)}>Insertion Sort</button>
-        <button onClick={()=>performSort(performBubbleSort)}>Bubble Sort</button>
+        <button  onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>Insertion Sort</button>
+        <button onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>Bubble Sort</button>
         <button onClick={()=>performSort(performSelectionSort)}>Selection Sort</button>
         <button onClick={()=>performSort(performQuickSort)}>Quick Sort</button>
         <button onClick={()=>performSort(performHeapSort)}>Heap Sort</button>
@@ -84,7 +92,7 @@ function SortingVisualizer() {
           </>
         )
       }
-        {!pauseHidden&&<button> Pause </button>}
+        <button id="pauseButton" hidden={!isHidden}> Pause </button>
     </div>
   );
 }

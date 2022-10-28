@@ -19,8 +19,8 @@ function InsertionSort(Array) {
     }
     arr.push(arr1);
   }
-  console.log(Array);
-  console.log(arr);
+  // console.log(Array);
+  // console.log(arr);
   return arr;
 }
 function SelectionSort(Array) {
