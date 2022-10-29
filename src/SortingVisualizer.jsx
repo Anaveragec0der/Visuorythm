@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./sortingVisualizer.css";
-import { InsertionSort } from "./sortingAlgorithm/allSortingAlgrithms";
 import {
   performBubbleSort,
   performHeapSort,
@@ -38,11 +37,7 @@ function SortingVisualizer() {
   useEffect(() => {
     resetArray();
   }, []);
-
-  const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };  
-  
+   
   //for generating new array
   function generateNewArray() {
     resetArray();
