@@ -8,6 +8,8 @@ import  {
     quickSort
   } from "./sortingAlgorithm/allSortingAlgrithms";
   
+
+  let steps=[];
   //helper function to perform animation
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -17,11 +19,12 @@ import  {
   async function performInsertionSort(array,setArray,iState,jState,setIState,setJState){
     
     let temp1=false;
-    document.getElementById("pauseButton").addEventListener("click",()=>
-    {temp1=!temp1;});
+    const setTemp1 = ()=>{
+      temp1  = !temp1;
+    }
+    document.getElementById("pauseButton").addEventListener("click",setTemp1);
     const objectArray = InsertionSort(array.slice());
-    // console.log(objectArray);
-    let j = jState
+    let j = jState;
     for (let i = iState; i < objectArray.length; i++) {
       for (; j < objectArray[i].length; j++) {
    
@@ -43,7 +46,6 @@ import  {
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
-     
         if(temp1){
           setJState(j+1);
           break;
@@ -55,14 +57,20 @@ import  {
       }
       j=0;
     }
+    document.getElementById("pauseButton").removeEventListener("click",setTemp1);
   }
 
   //Selection Sort Visualization
-  async function performSelectionSort(array, setArray) {
+  async function performSelectionSort(array,setArray,iState,jState,setIState,setJState) {
+    let temp1=false;
+    const setTemp1 = ()=>{
+      temp1  = !temp1;
+    }
+    document.getElementById("pauseButton").addEventListener("click",setTemp1);
+    let j = jState
     const objectArray = SelectionSort(array.slice());
-
-    for (let i = 0; i < objectArray.length; i++) {
-      for (let j = 0; j < objectArray[i].length; j++) {
+    for (let i = iState; i < objectArray.length; i++) {
+      for (; j < objectArray[i].length; j++) {
         const { a: idx1, b: idx2 } = objectArray[i][j];
         const arrayBars = document.getElementsByClassName("array-bar");
         const barOneStyle = arrayBars[idx1].style;
@@ -79,25 +87,32 @@ import  {
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
+        if(temp1){
+          setJState(j+1);
+          break;
+        }
       }
+      if(temp1){
+        setIState(i);
+        break;
+      }
+      j=0;
     }
+    document.getElementById("pauseButton").removeEventListener("click",setTemp1);
   }
 
 //Bubble sort Visualization
 async function performBubbleSort(array,setArray,iState,jState,setIState,setJState){
   let temp1=false;
-  document.getElementById("pauseButton").addEventListener("click",()=>
-  {temp1=!temp1;});
-  console.time("start")
+  const setTemp1 = ()=>{
+    temp1  = !temp1;
+  }
+  document.getElementById("pauseButton").addEventListener("click",setTemp1);
   const {steps,sortedArray} = bubbleSort(array.slice());
-  console.timeEnd("start");
-  console.log(steps);
- 
+
   let j=jState;
   for ( let i=iState; i < steps.length; i++) {
     for (  ; j < steps[i].length; j++) {
-      // console.log(objectArray[i][j]);
-      console.log(i,j);
       const { a: idx1, b: idx2 } = steps[i][j];
       const arrayBars = document.getElementsByClassName("array-bar");
       const barOneStyle = arrayBars[idx1].style;
@@ -129,32 +144,33 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
     }
     j=0;
   }
+  document.getElementById("pauseButton").removeEventListener("click",setTemp1);
   // setArray(sortedArray);
 }
 
 
   //Heap Sort Visualization
-  async function performHeapSort(array, setArray) {
+  async function performHeapSort(array,setArray,iState,jState,setIState,setJState) {
+    let breakAll = false;
     let len = array.length;
-    // console.log(len);
-    // console.log(array);
     let heapifiedArrayAndSwappedIndexes = Heapify(array.slice(), len);
     let length = heapifiedArrayAndSwappedIndexes.length;
-    // console.log(heapifiedArrayAndSwappedIndexes);
     const heapifiedArray = heapifiedArrayAndSwappedIndexes[length - 1];
-    // const heapifiedArraylength = heapifiedArray.length;
-    // console.log(heapifiedArray);
-    // let heapifiedArray2 = heapifiedArray.slice();
     let onlyswappedIndexes = heapifiedArrayAndSwappedIndexes.slice(
       0,
       length - 1
     );
-    // console.log(onlyswappedIndexes);
+    let temp1=false;
+    const setTemp1 = ()=>{
+      temp1  = !temp1;
+    }
+    document.getElementById("pauseButton").addEventListener("click",setTemp1);
     const arrayOfObject = HeapSort(heapifiedArray, heapifiedArray.length);
-
+    console.log(arrayOfObject);
     // animation for creation of heap
     let lengthOfSwappedIndexesArray = onlyswappedIndexes.length;
-    for (let i = 0; i < lengthOfSwappedIndexesArray; i++) {
+    let i = jState==-1?iState:lengthOfSwappedIndexesArray;
+    for (; i < lengthOfSwappedIndexesArray; i++) {
       const { idx1: index1, idx2: index2 } = onlyswappedIndexes[i];
       const arrayBars = document.getElementsByClassName("array-bar");
       const barOneStyle = arrayBars[index1].style;
@@ -171,13 +187,20 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
 
       barOneStyle.backgroundColor = "turquoise";
       barTwoStyle.backgroundColor = "turquoise";
+      if(temp1){
+        setIState(i+1);
+        setJState(-1);
+        breakAll = true;
+        break;
+      }
     }
-    console.log("heap created");
+    if(breakAll)return;
 
     // animation for Sorting
     let lengthOfArrayOfObjects = arrayOfObject.length;
-
-    for (let i = 0; i < lengthOfArrayOfObjects; i++) {
+    i = jState==-1?0:iState;
+    let j = jState==-1?0:jState;
+    for (; i < lengthOfArrayOfObjects; i++) {
       const { a, b } = arrayOfObject[i][0];
       // console.log("swapping first index with last");
       const arrayBars = document.getElementsByClassName("array-bar");
@@ -195,9 +218,11 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
 
       barOneStyle.backgroundColor = "turquoise";
       barTwoStyle.backgroundColor = "turquoise";
-      for (let j = 1; j < arrayOfObject[i].length; j++) {
+      for (; j < arrayOfObject[i].length; j++) {
         // console.log("putting the swapped value in form of max heap");
         const { index1, index2 } = arrayOfObject[i][j];
+        console.log(i,j);
+        console.log(index1,index2)
         const arrayBars = document.getElementsByClassName("array-bar");
         const barOneStyle = arrayBars[index1].style;
         const barTwoStyle = arrayBars[index2].style;
@@ -213,18 +238,33 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
 
         barOneStyle.backgroundColor = "turquoise";
         barTwoStyle.backgroundColor = "turquoise";
+        if(temp1){
+          setJState(j+1);
+          break;
+        }
       }
-      
+      if(temp1){
+        setIState(i);
+        break;
+      }
+      j = 0;
     }
-    setArray(sortedArray);
+    document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+    // setArray(sortedArray);
   }
 
 //Merge Sort Visualization
 
-  async function performMergeSort(array, setArray) {
+  async function performMergeSort(array,setArray,iState,jState,setIState,setJState) {
+    let temp1=false;
+    const setTemp1 = ()=>{
+      temp1  = !temp1;
+    }
+    document.getElementById("pauseButton").addEventListener("click",setTemp1);
     let {steps,sortedArray} = mergeSort(array.slice());
-    for(let i=0;i<steps.length;i++){
-      for(let j=0;j<steps[i].length;j++){
+    let j = jState;
+    for(let i=iState;i<steps.length;i++){
+      for(;j<steps[i].length;j++){
           let a = document.getElementById(steps[i][j].a);
           let c = document.getElementById(steps[i][j].copy.pos);
           let b = document.getElementById(steps[i][j].b);
@@ -237,16 +277,35 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
           a.classList.toggle('active');
           b?.classList.toggle('active');
           c.classList.toggle('copiedposition');
+          if(temp1){
+            setJState(j+1);
+            break;
+          }
       }
+      if(temp1){
+        setIState(i);
+        break;
+      }
+      j = 0;
     }
-    setArray(sortedArray);
+    document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+    // setArray(sortedArray);
   }
 
   //QuickSort Visualization
-  async function performQuickSort(array, setArray) {
-    let {steps,sortedArray} = quickSort(array.slice());
-    for(let i =0;i<steps.length;i++){
-      for(let j=0;j<steps[i].length;j++){
+  async function performQuickSort(array,setArray,iState,jState,setIState,setJState) {
+    let temp1=false;
+    const setTemp1 = ()=>{
+      temp1  = !temp1;
+    }
+    document.getElementById("pauseButton").addEventListener("click",setTemp1);
+    if(steps.length===0){
+      steps = quickSort(array.slice()).steps;
+    }
+    let j = jState;
+    console.log(steps);
+    for(let i = iState;i<steps.length;i++){
+      for(;j<steps[i].length;j++){
         if(j===0){
           const highIndex = document.getElementById(steps[i][j].b);
           const pivot = document.getElementById(steps[i][j].a);
@@ -296,9 +355,19 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
         await sleep(30);
         a.classList.toggle('active');
         b.classList.toggle('active');
+        if(temp1){
+          setJState(j+1);
+          break;
+        }
       }
+      if(temp1){
+        setIState(i);
+        break;
+      }
+      j = 0;
     }
-    setArray(sortedArray);
+    document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+    // setArray(sortedArray);
   }
 
   export {performInsertionSort, performBubbleSort, performSelectionSort, performHeapSort, performMergeSort, performQuickSort}

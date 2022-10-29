@@ -1,6 +1,6 @@
-let arr = [];
 // let arr2 = [];
 function InsertionSort(Array) {
+  let arr = [];
   for (let i = 1; i < Array.length; i++) {
     let arr1 = [];
     let j = i - 1;
@@ -24,6 +24,7 @@ function InsertionSort(Array) {
   return arr;
 }
 function SelectionSort(Array) {
+  let arr = [];
   let i, j, k;
   // let obj={};
   for (i = 0; i < Array.length - 1; i++) {
@@ -213,7 +214,7 @@ const merge = (array,start,mid,end,steps)=>{
 }
 
 const quickSort = (array)=>{
-  const steps=[];
+  let steps = [];
   partitionAndSort(array, 0, array.length-1,steps);
   return {steps:steps,sortedArray:array};
 }

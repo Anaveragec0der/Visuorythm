@@ -14,6 +14,7 @@ function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [isHidden, setHidden]=useState(false);
   const [pauseHidden, setPause]=useState(true);
+  const [pauseDisabled, setPauseDisabled] = useState(false);
   const[iState,setIState]=useState(0);
   const[jState,setJState]=useState(0);
 
@@ -45,6 +46,8 @@ function SortingVisualizer() {
   //for generating new array
   function generateNewArray() {
     resetArray();
+    setIState(0);
+    setJState(0);
   }
 
   //display original array in the console
@@ -56,9 +59,11 @@ function SortingVisualizer() {
 
  
   async function performSort(sort,nameOfAlgo){
+    if(nameOfAlgo==='Quick Sort')setPauseDisabled(true);
     setHidden(true);
     await sort(array,setArray,iState,jState,setIState,setJState);
     setHidden(false);
+    setPauseDisabled(false);
   }
 
   return (
@@ -84,10 +89,10 @@ function SortingVisualizer() {
         <button onClick={generateNewArray}> Generate New Array </button>
         <button  onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>Insertion Sort</button>
         <button onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>Bubble Sort</button>
-        <button onClick={()=>performSort(performSelectionSort)}>Selection Sort</button>
-        <button onClick={()=>performSort(performQuickSort)}>Quick Sort</button>
-        <button onClick={()=>performSort(performHeapSort)}>Heap Sort</button>
-        <button onClick={()=>performSort(performMergeSort)}>Merge Sort</button>
+        <button onClick={()=>performSort(performSelectionSort,"Selection Sort")}>Selection Sort</button>
+        <button onClick={()=>performSort(performQuickSort,"Quick Sort")}>Quick Sort</button>
+        <button onClick={()=>performSort(performHeapSort,"Heap Sort")}>Heap Sort</button>
+        <button onClick={()=>performSort(performMergeSort,"Merge Sort")}>Merge Sort</button>
         <button onClick={ShowArray}> Show Original Array </button>
           </>
         )
