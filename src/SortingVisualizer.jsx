@@ -28,6 +28,7 @@ function SortingVisualizer() {
     const arrayBar = document.getElementById("sample");
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
     const maxBars = (window.innerWidth/2)/effectiveSize;
+    
     for (let i = 0; i < maxBars; i++) {
       arr.push(randomInterval(20, 400));
     }
@@ -54,11 +55,16 @@ function SortingVisualizer() {
 
  
   async function performSort(sort,nameOfAlgo){
-    if(nameOfAlgo==='Quick Sort')setPauseDisabled(true);
+    if(nameOfAlgo==='Heap Sort')setPauseDisabled(true);
     setHidden(true);
     await sort(array,setArray,iState,jState,setIState,setJState);
     setHidden(false);
     setPauseDisabled(false);
+    const A=[];
+    for(let i=0;i<array.length;i++){
+      A.push(document.getElementById(i).style.height);
+    }
+    setArray(A);
   }
 
   return (
@@ -92,7 +98,7 @@ function SortingVisualizer() {
           </>
         )
       }
-        <button id="pauseButton" hidden={!isHidden}> Pause </button>
+        <button id="pauseButton" disabled={pauseDisabled} hidden={!isHidden}> Pause </button>
     </div>
   );
 }
