@@ -31,7 +31,7 @@ import  {
         // console.log(objectArray[i][j]);
         const { a,b } = objectArray[i][j];
         // console.log(idx1 + " " + idx2 + " " + swap);
-        // const arrayBars = document.getElementsByClassName("array-bar");
+        const arrayBars = document.getElementsByClassName("array-bar");
 
         arrayBars[a].classList.toggle("active");
         arrayBars[b].classList.toggle("active");
