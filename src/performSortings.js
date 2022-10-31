@@ -9,20 +9,27 @@ import  {
   } from "./sortingAlgorithm/allSortingAlgrithms";
   
 
-  let steps=[];
+  let quickSortResult={};
   //helper function to perform animation
   const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };  
   
   //Insertion Sort Visualization
-  async function performInsertionSort(array,setArray,iState,jState,setIState,setJState){
-    
+  async function performInsertionSort(array,setArray,iState,jState,setIState,setJState,setPauseHidden,setPauseClicked){
+    setPauseClicked(false);
+    document.getElementById('resumeButton').hidden=true;
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
+    let stopTriggered=false;
+    const stop = ()=>{
+      stopTriggered = true;
+    }
+    document.getElementById("stopButton").addEventListener('click',stop);
     const objectArray = InsertionSort(array.slice());
     let j = jState;
     for (let i = iState; i < objectArray.length; i++) {
@@ -48,23 +55,49 @@ import  {
           setJState(j+1);
           break;
         }
+        if(stopTriggered){
+          quickSortResult = {};
+          document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+          document.getElementById("stopButton").removeEventListener('click',stop);
+          return;
+        }
       }
       if(temp1){
         setIState(i);
-        break;
+        setPauseClicked(true);
+        document.getElementById('resumeButton').hidden=false;
+        const resume = ()=>{
+          performInsertionSort(array,setArray,i,j+1,setIState,setJState,setPauseHidden,setPauseClicked);
+        }
+        document.getElementById("resumeButton").addEventListener("click",resume);
+        return;
       }
       j=0;
     }
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+    setIState(0);
+    setJState(0);
+    // setArray(sortedArray);
+    setPauseClicked(false);
+    setPauseHidden(true);
   }
 
   //Selection Sort Visualization
-  async function performSelectionSort(array,setArray,iState,jState,setIState,setJState) {
+  async function performSelectionSort(array,setArray,iState,jState,setIState,setJState,setPauseHidden,setPauseClicked) {
+    setPauseClicked(false);
+    document.getElementById('resumeButton').hidden=true;
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
+    let stopTriggered=false;
+    const stop = ()=>{
+      stopTriggered = true;
+    }
+    document.getElementById("stopButton").addEventListener('click',stop);
     let j = jState
     const objectArray = SelectionSort(array.slice());
     for (let i = iState; i < objectArray.length; i++) {
@@ -95,22 +128,48 @@ import  {
           setJState(j+1);
           break;
         }
+        if(stopTriggered){
+          quickSortResult = {};
+          document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+          document.getElementById("stopButton").removeEventListener('click',stop);
+          return;
+        }
       }
       if(temp1){
         setIState(i);
-        break;
+        setPauseClicked(true);
+        document.getElementById('resumeButton').hidden=false;
+        const resume = ()=>{
+          performSelectionSort(array,setArray,i,j+1,setIState,setJState,setPauseHidden,setPauseClicked);
+        }
+        document.getElementById("resumeButton").addEventListener("click",resume);
+        return;
       }
       j=0;
     }
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+    setIState(0);
+    setJState(0);
+    // setArray(sortedArray);
+    setPauseClicked(false);
+    setPauseHidden(true);
   }
 
 //Bubble sort Visualization
-async function performBubbleSort(array,setArray,iState,jState,setIState,setJState){
+async function performBubbleSort(array,setArray,iState,jState,setIState,setJState,setPauseHidden,setPauseClicked){
+  setPauseClicked(false);
+  document.getElementById('resumeButton').hidden=true;
   let temp1=false;
   const setTemp1 = ()=>{
     temp1  = !temp1;
   }
+  let stopTriggered=false;
+    const stop = ()=>{
+      stopTriggered = true;
+    }
+  document.getElementById("stopButton").addEventListener('click',stop);
+  document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
   document.getElementById("pauseButton").addEventListener("click",setTemp1);
   const {steps,sortedArray} = bubbleSort(array.slice());
 
@@ -118,7 +177,6 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
   for ( let i=iState; i < steps.length; i++) {
     for (  ; j < steps[i].length; j++) {
       const { a: idx1, b: idx2 } = steps[i][j];
-      // const arrayBars = document.getElementsByClassName("array-bar");
       const barA=document.getElementById(idx1)
       const barB=document.getElementById(idx2);
       
@@ -134,26 +192,39 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
       }
 
       await sleep(20);
-      // barOneStyle.backgroundColor="turquoise";
-      // barTwoStyle.backgroundColor="turquoise";
       barA.classList.toggle("active");
       barB.classList.toggle("active");
 
       if(temp1){
-        // console.log(temp1);
         setJState(j+1);
         break;
+      }
+      if(stopTriggered){
+        document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+        document.getElementById("stopButton").removeEventListener('click',stop);
+        return;
       }
       
     }
     if(temp1){
       setIState(i);
-      break;
+      setPauseClicked(true);
+      document.getElementById('resumeButton').hidden=false;
+      const resume = ()=>{
+        performBubbleSort(array,setArray,i,j+1,setIState,setJState,setPauseHidden,setPauseClicked);
+      }
+      document.getElementById("resumeButton").addEventListener("click",resume);
+      return;
     }
     j=0;
   }
+  document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
   document.getElementById("pauseButton").removeEventListener("click",setTemp1);
-  // setArray(sortedArray);
+  setIState(0);
+  setJState(0);
+  setArray(sortedArray);
+  setPauseClicked(false);
+  setPauseHidden(true);
 }
 
 
@@ -264,11 +335,19 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
   }
 //Merge Sort Visualization
 
-  async function performMergeSort(array,setArray,iState,jState,setIState,setJState) {
+  async function performMergeSort(array,setArray,iState,jState,setIState,setJState,setPauseHidden,setPauseClicked) {
+    setPauseClicked(false);
+    document.getElementById('resumeButton').hidden=true;
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
+    let stopTriggered=false;
+    const stop = ()=>{
+      stopTriggered = true;
+    }
+    document.getElementById("stopButton").addEventListener('click',stop);
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
     let {steps,sortedArray} = mergeSort(array.slice());
     let j = jState;
@@ -290,27 +369,52 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
             setJState(j+1);
             break;
           }
+          if(stopTriggered){
+            document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+            document.getElementById("stopButton").removeEventListener('click',stop);
+            return;
+          }
       }
       if(temp1){
         setIState(i);
-        break;
+        setPauseClicked(true);
+        document.getElementById('resumeButton').hidden=false;
+        const resume = ()=>{
+          performMergeSort(array,setArray,i,j+1,setIState,setJState,setPauseHidden,setPauseClicked);
+        }
+        document.getElementById("resumeButton").addEventListener("click",resume);
+        return;
       }
       j = 0;
     }
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
-    // setArray(sortedArray);
+    setIState(0);
+    setJState(0);
+    setArray(sortedArray);
+    setPauseClicked(false);
+    setPauseHidden(true);
   }
 
   //QuickSort Visualization
-  async function performQuickSort(array,setArray,iState,jState,setIState,setJState) {
+  async function performQuickSort(array,setArray,iState,jState,setIState,setJState,setPauseHidden,setPauseClicked) {
+    setPauseClicked(false);
+    document.getElementById('resumeButton').hidden=true;
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
-    if(steps.length===0){
-      steps = quickSort(array.slice()).steps;
+    let stopTriggered=false;
+    const stop = ()=>{
+      stopTriggered = true;
     }
+    document.getElementById("stopButton").addEventListener('click',stop);
+    if(Object.keys(quickSortResult).length===0){
+      quickSortResult = quickSort(array.slice());
+    }
+    let {steps,sortedArray} = quickSortResult;
     let j = jState;
     // console.log(steps);
     for(let i = iState;i<steps.length;i++){
@@ -368,15 +472,33 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
           setJState(j+1);
           break;
         }
+        if(stopTriggered){
+          quickSortResult = {};
+          document.getElementById("pauseButton").removeEventListener("click",setTemp1);
+          document.getElementById("stopButton").removeEventListener('click',stop);
+          return;
+        }
       }
       if(temp1){
         setIState(i);
-        break;
+        setPauseClicked(true);
+        document.getElementById('resumeButton').hidden=false;
+        const resume = ()=>{
+          performQuickSort(array,setArray,i,j+1,setIState,setJState,setPauseHidden,setPauseClicked);
+        }
+        document.getElementById("resumeButton").addEventListener("click",resume);
+        return;
       }
       j = 0;
     }
+    quickSortResult = {};
+    document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
-    // setArray(sortedArray);
+    setIState(0);
+    setJState(0);
+    setArray(sortedArray);
+    setPauseClicked(false);
+    setPauseHidden(true);
   }
 
   export {performInsertionSort, performBubbleSort, performSelectionSort, performHeapSort, performMergeSort, performQuickSort}

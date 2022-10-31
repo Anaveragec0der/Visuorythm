@@ -11,11 +11,11 @@ import {
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
-  const [isHidden, setHidden]=useState(false);
-  const [pauseHidden, setPause]=useState(true);
-  const [pauseDisabled, setPauseDisabled] = useState(false);
-  const[iState,setIState]=useState(0);
-  const[jState,setJState]=useState(0);
+  const [pauseHidden,setPauseHidden] = useState(true);
+  const [pauseDisabled,setPauseDisabled] = useState(false);
+  const [pauseClicked,setPauseClicked] = useState(false);
+  const [iState,setIState]=useState(0);
+  const [jState,setJState]=useState(0);
 
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -51,20 +51,30 @@ function SortingVisualizer() {
     console.log(array);
   }
 
-
+  const handleStop = ()=>{
+    setTimeout(()=>{
+      setIState(0);
+      setJState(0);
+      setPauseClicked(false);
+      setPauseHidden(true);
+      document.getElementById('resumeButton').hidden=true;
+      document.getElementById('resumeButton').replaceWith(document.getElementById('resumeButton').cloneNode(true));
+      let A = [];
+      for(let k=0;k<array.length;k++){
+        const elem = document.getElementById(k);
+        A.push(elem.getBoundingClientRect().height);
+        elem.classList.remove('active');
+        elem.classList.remove('copiedposition');
+      }
+      setArray(A);
+      },300)
+  }
 
  
   async function performSort(sort,nameOfAlgo){
     if(nameOfAlgo==='Heap Sort')setPauseDisabled(true);
-    setHidden(true);
-    await sort(array,setArray,iState,jState,setIState,setJState);
-    setHidden(false);
-    setPauseDisabled(false);
-    const A=[];
-    for(let i=0;i<array.length;i++){
-      A.push(document.getElementById(i).style.height);
-    }
-    setArray(A);
+    setPauseHidden(false);
+    await sort(array,setArray,iState,jState,setIState,setJState,setPauseHidden,setPauseClicked);
   }
 
   return (
@@ -78,14 +88,13 @@ function SortingVisualizer() {
             id={index}
             style={{ height: `${value}px` }}
           >
-            {" "}
           </div>
         ))}
         <br />
         <div className="array-bar" style={{visibility:'hidden',height:'0px'}} id="sample"></div>
       </div>
       {
-        !isHidden&&(
+        pauseHidden&&(
           <>
         <button onClick={generateNewArray}> Generate New Array </button>
         <button  onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>Insertion Sort</button>
@@ -98,7 +107,9 @@ function SortingVisualizer() {
           </>
         )
       }
-        <button id="pauseButton" disabled={pauseDisabled} hidden={!isHidden}> Pause </button>
+        <button id="pauseButton" disabled={pauseDisabled} hidden={pauseHidden||pauseClicked}> Pause </button>
+        <button id="resumeButton" hidden>Resume</button>
+        <button id="stopButton" hidden={pauseHidden} onClick={handleStop}>Stop</button>
     </div>
   );
 }
