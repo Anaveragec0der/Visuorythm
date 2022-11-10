@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+// import { Button } from "antd";
+// import { PauseCircleOutlined,StopOutlined,ArrowRightOutlined,UndoOutlined,PlayCircleOutlined} from '@ant-design/icons';
+// import "antd/dist/antd.min.css";
+import 'semantic-ui-css/semantic.min.css'
+import { Button,Icon,Grid, GridColumn,Segment } from 'semantic-ui-react'
+import { Slider } from "react-semantic-ui-range";
 import "./sortingVisualizer.css";
 import {
   performBubbleSort,
@@ -24,6 +30,8 @@ function SortingVisualizer() {
   const[resumeText,setResumeText]=useState(false);
   const[iState,setIState]=useState(0);
   const[jState,setJState]=useState(0);
+  const[value,setValue]=useState(100);
+  const[speed,setSpeed]=useState(50);
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
@@ -35,7 +43,7 @@ function SortingVisualizer() {
     const arr = [];
     const arrayBar = document.getElementById("sample");
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
-    const maxBars = (window.innerWidth/2)/effectiveSize;
+    const maxBars = ((window.innerWidth/2)/effectiveSize)*value/100;
     
     for (let i = 0; i < maxBars; i++) {
       arr.push(randomInterval(20, 400));
@@ -142,12 +150,64 @@ function SortingVisualizer() {
     // }
     // setArray(A);
   }
-
-  
+  const settings={
+    start:100,
+    min:10,
+    max:100,
+    step:10,
+    onChange:(value)=>{
+      setValue(value);
+      generateNewArray();
+    }
+   }
+  const speedSettings={
+    start:50,
+    min:10,
+    max:100,
+    step:10,
+    onChange:(speed)=>{
+      setSpeed(speed);
+    }
+   }
   return (
-    <div>
+     <div>
+     <div id="sliders">
+     <div>
+        <Grid padded>
+    <Grid.Column width={2}>
+      
+        <p>
+          <Slider
+            value={value}
+            color="red"
+            inverted={false}
+            settings={settings}
+          />
+        </p>
+      
+    </Grid.Column>
+    </Grid>
+    </div>
+
+     <div data-value= {speed} id="speedControl" >
+        <Grid padded>
+    <Grid.Column width={2}>
+      
+        <p>
+          <Slider
+            value={speed}
+            color="red"
+            inverted={false}
+            settings={speedSettings}
+          />
+        </p>
+      
+    </Grid.Column>
+    </Grid>
+    </div>
+</div>
       <div className="array-container">
-       
+
         {array.map((value, index) => (
           <div
             className="array-bar"
@@ -164,22 +224,22 @@ function SortingVisualizer() {
       {
         !isHidden&&(
           <>
-        <button hidden={generateNewArrayHidden} onClick={generateNewArray}> Generate New Array </button>
-        <button hidden={insertionSort} onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>{!resumeText?"Insertion Sort":"Resume"}</button>
-        <button hidden={bubbleSort} onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>{!resumeText?"BubbleSort":"Resume"}</button>
-        <button hidden={selectionSort} onClick={()=>performSort(performSelectionSort,"Selection Sort")}>{!resumeText?"SelectionSort":"Resume"}</button>
-        <button hidden={quickSort} onClick={()=>performSort(performQuickSort,"Quick Sort")}>{!resumeText?"Quick Sort":"Resume"}</button>
-        <button hidden={heapSort} onClick={()=>performSort(performHeapSort,"Heap Sort")}>{!resumeText?"Heap Sort":"Resume"}</button>
-        <button hidden={mergeSort} onClick={()=>performSort(performMergeSort,"Merge Sort")}>{!resumeText?"Merge Sort":"Resume"}</button>
-        <button onClick={ShowArray}> Show Original Array </button>
-        {generateNewArrayHidden&&(<button onClick={handleStop}> Reset </button>)}
+        <Button primary style={{display:generateNewArrayHidden?"none":""}} onClick={generateNewArray}> Generate New Array </Button>
+        <Button basic color={!resumeText?"teal":"green"} style={{display:insertionSort?"none":""}} onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>{!resumeText?"Insertion Sort":"Resume"}</Button>
+        <Button basic color={!resumeText?"teal":"green"} style={{display:bubbleSort?"none":""}} onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>{!resumeText?"BubbleSort":"Resume"}</Button>
+        <Button basic color={!resumeText?"teal":"green"} style={{display:selectionSort?"none":""}} onClick={()=>performSort(performSelectionSort,"Selection Sort")}>{!resumeText?"SelectionSort":"Resume"}</Button>
+        <Button basic color={!resumeText?"teal":"green"} style={{display:quickSort?"none":""}} onClick={()=>performSort(performQuickSort,"Quick Sort")}>{!resumeText?"Quick Sort":"Resume"}</Button>
+        <Button basic color={!resumeText?"teal":"green"} style={{display:heapSort?"none":""}} onClick={()=>performSort(performHeapSort,"Heap Sort")}>{!resumeText?"Heap Sort":"Resume"}</Button>
+        <Button basic color={!resumeText?"teal":"green"} style={{display:mergeSort?"none":""}} onClick={()=>performSort(performMergeSort,"Merge Sort")}>{!resumeText?"Merge Sort":"Resume"}</Button>
+         <Button onClick={ShowArray}> Show Original Array </Button> 
+        {generateNewArrayHidden&&(<Button secondary onClick={handleStop}> Reset </Button>)}
           </>
         )
       }
-        <button id="pauseButton" disabled={pauseDisabled} hidden={!isHidden} > Pause </button>
-        <button  hidden={!isHidden} onClick={handleStop}>Stop</button>
+        <Button id="pauseButton" inverted color="yellow" disabled={pauseDisabled} style={{display:!isHidden?"none":""}}  > Pause </Button>
+        <Button style={{display:!isHidden?"none":""}} inverted color="red" onClick={handleStop}>Stop</Button>
     </div>
   );
-}
+} 
 
 export default SortingVisualizer;

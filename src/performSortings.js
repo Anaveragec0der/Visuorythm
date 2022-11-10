@@ -27,7 +27,7 @@ import  {
     let j = jState;
     for (let i = iState; i < objectArray.length; i++) {
       for (; j < objectArray[i].length; j++) {
-   
+        let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
         // console.log(objectArray[i][j]);
         const { a,b } = objectArray[i][j];
         // console.log(idx1 + " " + idx2 + " " + swap);
@@ -35,12 +35,12 @@ import  {
 
         arrayBars[a].classList.toggle("active");
         arrayBars[b].classList.toggle("active");
-        await sleep(50);
+        await sleep(10*100/speed);
 
         const temp = arrayBars[a].style.height;
         arrayBars[a].style.height = arrayBars[b].style.height;
         arrayBars[b].style.height = temp;
-        await sleep(50);
+        await sleep(10*100/speed);
 
         arrayBars[a].classList.toggle("active");
         arrayBars[b].classList.toggle("active");
@@ -69,6 +69,7 @@ import  {
     const objectArray = SelectionSort(array.slice());
     for (let i = iState; i < objectArray.length; i++) {
       for (; j < objectArray[i].length; j++) {
+        let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
         const { a: idx1, b: idx2 } = objectArray[i][j];
         // const arrayBars = document.getElementsByClassName("array-bar");
         // const barOneStyle = arrayBars[idx1].style;
@@ -79,12 +80,12 @@ import  {
 
         barA.classList.toggle("active");
         barB.classList.toggle("active");
-        await sleep(50);
+        await sleep(10*100/speed);
 
         const temp = barA.style.height;
         barA.style.height = barB.style.height;
         barB.style.height = temp;
-        await sleep(50);
+        await sleep(10*100/speed);
 
         // barOneStyle.backgroundColor = "turquoise";
         // barTwoStyle.backgroundColor = "turquoise";
@@ -117,6 +118,7 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
   let j=jState;
   for ( let i=iState; i < steps.length; i++) {
     for (  ; j < steps[i].length; j++) {
+      let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
       const { a: idx1, b: idx2 } = steps[i][j];
       // const arrayBars = document.getElementsByClassName("array-bar");
       const barA=document.getElementById(idx1)
@@ -125,7 +127,7 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
 
       barA.classList.toggle("active");
       barB.classList.toggle("active");
-      await sleep(20);
+      await sleep((10*100)/speed);
 
       if(steps[i][j].swap){
         const temp = barA.style.height;
@@ -133,7 +135,7 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
         barB.style.height = temp;
       }
 
-      await sleep(20);
+      await sleep((10*100)/speed);
       // barOneStyle.backgroundColor="turquoise";
       // barTwoStyle.backgroundColor="turquoise";
       barA.classList.toggle("active");
@@ -179,6 +181,7 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
     // animation for creation of heap
     let lengthOfSwappedIndexesArray = onlyswappedIndexes.length;
     for (let i = 0; i < lengthOfSwappedIndexesArray; i++) {
+      let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
       const { idx1: index1, idx2: index2 } = onlyswappedIndexes[i];
       // const arrayBars = document.getElementsByClassName("array-bar");
       // const barOneStyle = arrayBars[index1].style;
@@ -190,11 +193,11 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
       barA.classList.toggle("active");
       barB.classList.toggle("active");
 
-      await sleep(50);
+      await sleep(10*100/speed);
       const temp = barA.style.height;
         barA.style.height = barB.style.height;
         barB.style.height = temp;
-      await sleep(50);
+      await sleep(10*100/speed);
 
       // barOneStyle.backgroundColor = "turquoise";
       // barTwoStyle.backgroundColor = "turquoise";
@@ -212,7 +215,7 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
       const { a, b } = arrayOfObject[i][0];
       // console.log("swapping first index with last");
       // const arrayBars = document.getElementsByClassName("array-bar");
-
+      let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
       // const barOneStyle = arrayBars[a].style;
       // const barTwoStyle = arrayBars[b].style;
       const barA=document.getElementById(a)
@@ -223,11 +226,11 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
       barA.classList.toggle("active");
       barB.classList.toggle("active");
 
-      await sleep(50);
+      await sleep(10*100/speed);
       const temp = barA.style.height;
       barA.style.height = barB.style.height;
       barB.style.height = temp;
-      await sleep(50);
+      await sleep(10*100/speed);
 
       // barOneStyle.backgroundColor = "turquoise";
       // barTwoStyle.backgroundColor = "turquoise";
@@ -247,11 +250,11 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
         // barTwoStyle.backgroundColor = "red";
         barA.classList.toggle("active");
         barB.classList.toggle("active");
-        await sleep(50);
+        await sleep(10*100/speed);
         const temp = barA.style.height;
         barA.style.height = barB.style.height;
         barB.style.height = temp;
-        await sleep(50);
+        await sleep(10*100/speed);
 
         // barOneStyle.backgroundColor = "turquoise";
         // barTwoStyle.backgroundColor = "turquoise";
@@ -274,15 +277,16 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
     let j = jState;
     for(let i=iState;i<steps.length;i++){
       for(;j<steps[i].length;j++){
+        let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
           let a = document.getElementById(steps[i][j].a);
           let c = document.getElementById(steps[i][j].copy.pos);
           let b = document.getElementById(steps[i][j].b);
           a.classList.toggle('active');
           b?.classList.toggle('active');
           c.classList.toggle('copiedposition');
-          await sleep(30);
+          await sleep(10*100/speed);
           c.style.height = `${steps[i][j].copy.val}px`;
-          await sleep(30);
+          await sleep(10*100/speed);
           a.classList.toggle('active');
           b?.classList.toggle('active');
           c.classList.toggle('copiedposition');
@@ -315,13 +319,14 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
     // console.log(steps);
     for(let i = iState;i<steps.length;i++){
       for(;j<steps[i].length;j++){
+        let speed=Number(document.getElementById("speedControl").getAttribute("data-value"));
         if(j===0){
           const highIndex = document.getElementById(steps[i][j].b);
           const pivot = document.getElementById(steps[i][j].a);
           pivot.classList.toggle('copiedposition');
-          await sleep(30);
+          await sleep(10*100/speed);
           highIndex.classList.toggle('active');
-          await sleep(30);
+          await sleep(10*100/speed);
           const tmp = highIndex.style.height;
           highIndex.style.height = pivot.style.height;
           pivot.style.height = tmp;
@@ -329,24 +334,24 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
           pivot.classList.toggle('active')
           highIndex.classList.toggle('active');
           highIndex.classList.toggle('copiedposition');
-          await sleep(30);
+          await sleep(10*100/speed);
           pivot.classList.toggle('active');
-          await sleep(30);
+          await sleep(10*100/speed);
           continue;
         }
         if(j===steps[i].length-1){
           const a = document.getElementById(steps[i][j].a);
           const b = document.getElementById(steps[i][j].b);
           a.classList.toggle('active');
-          await sleep(30);
+          await sleep(10*100/speed);
           const tmp = b.style.height;
           b.style.height = a.style.height;
           a.style.height = tmp;
-          await sleep(30);
+          await sleep(10*100/speed);
           a.classList.toggle('active');
           b.classList.toggle('copiedposition');
           a.classList.toggle('copiedposition');
-          await sleep(30);
+          await sleep(10*100/speed);
           a.classList.toggle('copiedposition');
           continue;
         }
@@ -356,12 +361,12 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
         a.classList.toggle('active');
         b.classList.toggle('active');
         if(steps[i][j].swap){
-          await sleep(30);
+          await sleep(10*100/speed);
           const tmp = a.style.height;
           a.style.height = b.style.height;
           b.style.height = tmp;
         }
-        await sleep(30);
+        await sleep(10*100/speed);
         a.classList.toggle('active');
         b.classList.toggle('active');
         if(temp1){
