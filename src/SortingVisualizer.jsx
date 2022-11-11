@@ -15,7 +15,7 @@ import {
   performSelectionSort
 } from "./performSortings"
 
-
+let arrayOfNumbers=[];
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const [isHidden, setHidden]=useState(false);
@@ -39,9 +39,9 @@ function SortingVisualizer() {
 
   window.onresize = resetArray;
 
-  function resetArray() {
-   if(input===""||arrayOfNumbers.length===0){
-
+  function resetArray(event,force) {
+    console.log(force);
+   if(input.length===0||force){
     const arr = [];
     const arrayBar = document.getElementById("sample");
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
@@ -60,14 +60,26 @@ function SortingVisualizer() {
 }
 
   useEffect(() => {
+    setInput("");
+    arrayOfNumbers=[];
     resetArray();
   }, []);
+
+  useEffect(() => {
+  }, [array]);
    
   //for generating new array
   function generateNewArray() {
-    resetArray();
     setIState(0);
     setJState(0);
+    resetArray();
+  }
+
+  function forceGenerateNewArray(){
+    setInput("");
+    setIState(0);
+    setJState(0);
+    resetArray("","force");
   }
 
   //display original array in the console
@@ -181,8 +193,8 @@ function SortingVisualizer() {
     setInput(event.target.value);
     // console.log(array);
    }
-   let arrayOfNumbers=[];
    function handleSubmit(){
+    arrayOfNumbers=[];
     let arrayOfStrings=input.split(",");
     // console.log(arrayOfStrings);
     arrayOfStrings.forEach(element => {
@@ -193,7 +205,7 @@ function SortingVisualizer() {
   return (
      <div>
      <label for="arrayInput"> ARRAY VALUES </label>
-     <input type={"text"} placeholder="enter the valuess in array" name="arrayInput" onChange={handleInput} autoComplete="off"/>
+     <input type={"text"} placeholder="enter the valuess in array" value={input} name="arrayInput" onChange={handleInput} autoComplete="off"/>
      <button onClick={handleSubmit}> Lets Go! </button>
      <div id="sliders">
      <div>
@@ -248,7 +260,7 @@ function SortingVisualizer() {
       {
         !isHidden&&(
           <>
-        <Button primary style={{display:generateNewArrayHidden?"none":""}} onClick={generateNewArray}> Generate New Array </Button>
+        <Button primary style={{display:generateNewArrayHidden?"none":""}} onClick={forceGenerateNewArray}> Generate New Array </Button>
         <Button basic color={!resumeText?"teal":"green"} style={{display:insertionSort?"none":""}} onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>{!resumeText?"Insertion Sort":"Resume"}</Button>
         <Button basic color={!resumeText?"teal":"green"} style={{display:bubbleSort?"none":""}} onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>{!resumeText?"BubbleSort":"Resume"}</Button>
         <Button basic color={!resumeText?"teal":"green"} style={{display:selectionSort?"none":""}} onClick={()=>performSort(performSelectionSort,"Selection Sort")}>{!resumeText?"SelectionSort":"Resume"}</Button>
