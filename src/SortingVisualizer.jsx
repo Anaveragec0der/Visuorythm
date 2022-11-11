@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import { Button } from "antd";
-// import { PauseCircleOutlined,StopOutlined,ArrowRightOutlined,UndoOutlined,PlayCircleOutlined} from '@ant-design/icons';
-// import "antd/dist/antd.min.css";
 import 'semantic-ui-css/semantic.min.css'
-import { Button,Icon,Grid, GridColumn,Segment } from 'semantic-ui-react'
-import { Slider } from "react-semantic-ui-range";
+import { Button,Icon, Input, Label,Transition } from 'semantic-ui-react'
+import Slider from '@mui/material/Slider';
 import "./sortingVisualizer.css";
 import {
   performBubbleSort,
@@ -40,7 +37,6 @@ function SortingVisualizer() {
   window.onresize = resetArray;
 
   function resetArray(event,force) {
-    console.log(force);
    if(input.length===0||force){
     const arr = [];
     const arrayBar = document.getElementById("sample");
@@ -204,42 +200,36 @@ function SortingVisualizer() {
    }
   return (
      <div>
-     <label for="arrayInput"> ARRAY VALUES </label>
-     <input type={"text"} placeholder="enter the valuess in array" value={input} name="arrayInput" onChange={handleInput} autoComplete="off"/>
-     <button onClick={handleSubmit}> Lets Go! </button>
+     <div id="inputContainer">
+     <Label as='a' color='violet' pointing="right">
+     Enter the valuess in array
+        </Label>
+     <Input type={"text"}
+     fluid 
+     focus
+     style={{width:"50%", margin:"10px"}}
+     value={input} name="arrayInput" onChange={handleInput} autoComplete="off"/>
+     <Button color="violet" size="small" onClick={handleSubmit}> Lets Go! </Button>
+     </div>
      <div id="sliders">
-     <div>
-        <Grid padded>
-        <Icon name="minus"/>
-    <Grid.Column width={2}>      
-        <p>
-          <Slider
-            value={value}
-            color="red"
-            inverted={false}
-            settings={settings}
-          />
-        </p>
-    </Grid.Column>
+     <div id="sizeSlider">
+      <div className="iconContainer">
+      <Icon name="minus"/>
+      </div>    
+    <Slider color="secondary" size="small" value={value} min={10} max={100} step={10} valueLabelDisplay="auto" onChange={(event,value)=>{setValue(value);generateNewArray();}}/>
+    <div className="iconContainer">
     <Icon name="plus"/>
-    </Grid>
     </div>
-
+    </div>
+    
      <div data-value= {speed} id="speedControl" >
-        <Grid padded>
-        <Icon name="backward"/>
-    <Grid.Column width={2}>
-        <p>
-          <Slider
-            value={speed}
-            color="red"
-            inverted={false}
-            settings={speedSettings}
-          />
-        </p>
-    </Grid.Column>
+     <div className="iconContainer">
+    <Icon name="backward"/>
+    </div>
+    <Slider color="secondary" size="small" value={speed} min={10} max={100} step={10} valueLabelDisplay="auto" onChange={(event,value)=>{setSpeed(value)}}/>
+    <div className="iconContainer">
     <Icon name="forward"/>
-    </Grid>
+    </div>
     </div>
 </div>
       <div className="array-container">
@@ -260,7 +250,14 @@ function SortingVisualizer() {
       {
         !isHidden&&(
           <>
-        <Button primary style={{display:generateNewArrayHidden?"none":""}} onClick={forceGenerateNewArray}> Generate New Array </Button>
+          <Transition
+            animation="bounce" 
+            duration={500} 
+            >
+              <Button primary style={{display:generateNewArrayHidden?"none":""}} onClick={forceGenerateNewArray}>
+          Generate New Array</Button>
+            </Transition>
+        
         <Button basic color={!resumeText?"teal":"green"} style={{display:insertionSort?"none":""}} onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>{!resumeText?"Insertion Sort":"Resume"}</Button>
         <Button basic color={!resumeText?"teal":"green"} style={{display:bubbleSort?"none":""}} onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>{!resumeText?"BubbleSort":"Resume"}</Button>
         <Button basic color={!resumeText?"teal":"green"} style={{display:selectionSort?"none":""}} onClick={()=>performSort(performSelectionSort,"Selection Sort")}>{!resumeText?"SelectionSort":"Resume"}</Button>

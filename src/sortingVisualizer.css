@@ -30,3 +30,31 @@
   margin-left: 2px;
   margin-right: 2px;
 }
+
+#inputContainer{
+  padding: 1%;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#sliders{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100vw;
+}
+
+#sizeSlider,#speedControl{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25vw;
+}
+
+.iconContainer{
+  padding: 5px;
+  margin: 5px;
+}
