@@ -32,6 +32,7 @@ function SortingVisualizer() {
   const[jState,setJState]=useState(0);
   const[value,setValue]=useState(100);
   const[speed,setSpeed]=useState(50);
+  const[input,setInput]=useState("");
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
@@ -39,7 +40,8 @@ function SortingVisualizer() {
   window.onresize = resetArray;
 
   function resetArray() {
-    
+   if(input===""||arrayOfNumbers.length===0){
+
     const arr = [];
     const arrayBar = document.getElementById("sample");
     const effectiveSize = arrayBar.getBoundingClientRect().width + 4;
@@ -50,6 +52,12 @@ function SortingVisualizer() {
     }
     setArray(arr);
   }
+  else{
+    // console.log(arrayOfNumbers);
+    const arr=[...arrayOfNumbers];
+    setArray(arr);
+  }
+}
 
   useEffect(() => {
     resetArray();
@@ -169,13 +177,29 @@ function SortingVisualizer() {
       setSpeed(speed);
     }
    }
+   function handleInput(){
+    setInput(event.target.value);
+    // console.log(array);
+   }
+   let arrayOfNumbers=[];
+   function handleSubmit(){
+    let arrayOfStrings=input.split(",");
+    // console.log(arrayOfStrings);
+    arrayOfStrings.forEach(element => {
+      arrayOfNumbers.push(Number(element));
+    });
+    resetArray();
+   }
   return (
      <div>
+     <label for="arrayInput"> ARRAY VALUES </label>
+     <input type={"text"} placeholder="enter the valuess in array" name="arrayInput" onChange={handleInput} autoComplete="off"/>
+     <button onClick={handleSubmit}> Lets Go! </button>
      <div id="sliders">
      <div>
         <Grid padded>
-    <Grid.Column width={2}>
-      
+        <Icon name="minus"/>
+    <Grid.Column width={2}>      
         <p>
           <Slider
             value={value}
@@ -184,15 +208,15 @@ function SortingVisualizer() {
             settings={settings}
           />
         </p>
-      
     </Grid.Column>
+    <Icon name="plus"/>
     </Grid>
     </div>
 
      <div data-value= {speed} id="speedControl" >
         <Grid padded>
+        <Icon name="backward"/>
     <Grid.Column width={2}>
-      
         <p>
           <Slider
             value={speed}
@@ -201,8 +225,8 @@ function SortingVisualizer() {
             settings={speedSettings}
           />
         </p>
-      
     </Grid.Column>
+    <Icon name="forward"/>
     </Grid>
     </div>
 </div>
