@@ -16,12 +16,17 @@ import  {
   };  
   
   //Insertion Sort Visualization
-  async function performInsertionSort(array,setArray,iState,jState,setIState,setJState){
+  async function performInsertionSort(array,setArray,iState,jState,setIState,setJState,setInsertionSort,handleStop){
     
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
+    let stopped = false;
+    const setStopped = ()=>{
+      stopped = true;
+    }
+    document.getElementById("stopButton").addEventListener("click",setStopped);
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
     const objectArray = InsertionSort(array.slice());
     let j = jState;
@@ -48,22 +53,33 @@ import  {
           setJState(j+1);
           break;
         }
+        if(stopped){
+          document.getElementById('stopButton').removeEventListener('click',setStopped);
+          handleStop();
+          return;
+        }
       }
       if(temp1){
         setIState(i);
-        break;
+        return;
       }
       j=0;
     }
+    setInsertionSort(true);
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
   }
 
   //Selection Sort Visualization
-  async function performSelectionSort(array,setArray,iState,jState,setIState,setJState) {
+  async function performSelectionSort(array,setArray,iState,jState,setIState,setJState,setSelectionSort,handleStop) {
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
+    let stopped = false;
+    const setStopped = ()=>{
+      stopped = true;
+    }
+    document.getElementById("stopButton").addEventListener("click",setStopped);
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
     let j = jState
     const objectArray = SelectionSort(array.slice());
@@ -96,22 +112,33 @@ import  {
           setJState(j+1);
           break;
         }
+        if(stopped){
+          document.getElementById('stopButton').removeEventListener('click',setStopped);
+          handleStop();
+          return;
+        }
       }
       if(temp1){
         setIState(i);
-        break;
+        return;
       }
       j=0;
     }
+    setSelectionSort(true);
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
   }
 
 //Bubble sort Visualization
-async function performBubbleSort(array,setArray,iState,jState,setIState,setJState){
+async function performBubbleSort(array,setArray,iState,jState,setIState,setJState,setBubbleSort,handleStop){
   let temp1=false;
   const setTemp1 = ()=>{
     temp1  = !temp1;
   }
+  let stopped = false;
+  const setStopped = ()=>{
+    stopped = true;
+  }
+  document.getElementById("stopButton").addEventListener("click",setStopped);
   document.getElementById("pauseButton").addEventListener("click",setTemp1);
   const {steps,sortedArray} = bubbleSort(array.slice());
 
@@ -146,15 +173,20 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
         setJState(j+1);
         break;
       }
-      
+      if(stopped){
+        document.getElementById('stopButton').removeEventListener('click',setStopped);
+        handleStop();
+        return;
+      }
     }
     if(temp1){
       setIState(i);
-      break;
+      return;
     }
     j=0;
   }
   // setArray(sortedArray);
+  setBubbleSort(true);
   document.getElementById("pauseButton").removeEventListener("click",setTemp1);
 }
 
@@ -267,11 +299,16 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
   }
 //Merge Sort Visualization
 
-  async function performMergeSort(array,setArray,iState,jState,setIState,setJState) {
+  async function performMergeSort(array,setArray,iState,jState,setIState,setJState,setMergeSort,handleStop) {
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
+    let stopped = false;
+    const setStopped = ()=>{
+      stopped = true;
+    }
+    document.getElementById("stopButton").addEventListener("click",setStopped);
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
     let {steps,sortedArray} = mergeSort(array.slice());
     let j = jState;
@@ -294,23 +331,34 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
             setJState(j+1);
             break;
           }
+          if(stopped){
+            document.getElementById('stopButton').removeEventListener('click',setStopped);
+            handleStop();
+            return;
+          }
       }
       if(temp1){
         setIState(i);
-        break;
+        return;
       }
       j = 0;
     }
+    setMergeSort(true);
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
     // setArray(sortedArray);
   }
 
   //QuickSort Visualization
-  async function performQuickSort(array,setArray,iState,jState,setIState,setJState) {
+  async function performQuickSort(array,setArray,iState,jState,setIState,setJState,setQuickSort,handleStop) {
     let temp1=false;
     const setTemp1 = ()=>{
       temp1  = !temp1;
     }
+    let stopped = false;
+    const setStopped = ()=>{
+      stopped = true;
+    }
+    document.getElementById("stopButton").addEventListener("click",setStopped);
     document.getElementById("pauseButton").addEventListener("click",setTemp1);
     if(steps.length===0){
       steps = quickSort(array.slice()).steps;
@@ -373,13 +421,21 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
           setJState(j+1);
           break;
         }
+        if(stopped){
+          steps=[];
+          document.getElementsByClassName('copiedposition')[0].classList.toggle('copiedposition');
+          document.getElementById('stopButton').removeEventListener('click',setStopped);
+          handleStop();
+          return;
+        }
       }
       if(temp1){
         setIState(i);
-        break;
+        return;
       }
       j = 0;
     }
+    setQuickSort(true);
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
     // setArray(sortedArray);
   }

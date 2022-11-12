@@ -86,7 +86,15 @@ function SortingVisualizer() {
  
  
   const handleStop = ()=>{
-    window.location.reload();
+      setResumeText(false);
+      setNewArray(false);
+      setInsertionSort(false);
+      setHeapSort(false);
+      setQuickSort(false);
+      setMergeSort(false);
+      setSelectionSort(false);
+      setHidden(false);
+      forceGenerateNewArray();
  }
   async function performSort(sort,nameOfAlgo){
     if(nameOfAlgo==='Heap Sort')setPauseDisabled(true);
@@ -99,7 +107,7 @@ function SortingVisualizer() {
       setQuickSort(true);
       setMergeSort(true);
       setSelectionSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState);
+      await sort(array,setArray,iState,jState,setIState,setJState,setBubbleSort,handleStop);
       setHidden(false);
       
     }
@@ -111,7 +119,7 @@ function SortingVisualizer() {
       setQuickSort(true);
       setMergeSort(true);
       setBubbleSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState);
+      await sort(array,setArray,iState,jState,setIState,setJState,setSelectionSort,handleStop);
       setHidden(false);
     }
     else if(nameOfAlgo==="Insertion Sort"){
@@ -122,7 +130,7 @@ function SortingVisualizer() {
       setMergeSort(true);
       setBubbleSort(true);
       setSelectionSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState);
+      await sort(array,setArray,iState,jState,setIState,setJState,setInsertionSort,handleStop);
       setHidden(false);
     }
     else if(nameOfAlgo==="Quick Sort"){
@@ -133,7 +141,7 @@ function SortingVisualizer() {
       setSelectionSort(true);
       setHeapSort(true);
       setMergeSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState);
+      await sort(array,setArray,iState,jState,setIState,setJState,setQuickSort,handleStop);
       setHidden(false);
     }
     else if(nameOfAlgo==="Merge Sort"){
@@ -144,7 +152,7 @@ function SortingVisualizer() {
       setHeapSort(true);
       setQuickSort(true);
       setInsertionSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState);
+      await sort(array,setArray,iState,jState,setIState,setJState,setMergeSort,handleStop);
       setHidden(false);
     }
     else if(nameOfAlgo==="Heap Sort"){
@@ -155,7 +163,7 @@ function SortingVisualizer() {
       setMergeSort(true);
       setInsertionSort(true);
       setQuickSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState);
+      await sort(array,setArray,iState,jState,setIState,setJState,setHeapSort,handleStop);
       setHidden(false);
     }
     // setHidden(false);
@@ -166,25 +174,7 @@ function SortingVisualizer() {
     // }
     // setArray(A);
   }
-  const settings={
-    start:100,
-    min:10,
-    max:100,
-    step:10,
-    onChange:(value)=>{
-      setValue(value);
-      generateNewArray();
-    }
-   }
-  const speedSettings={
-    start:50,
-    min:10,
-    max:100,
-    step:10,
-    onChange:(speed)=>{
-      setSpeed(speed);
-    }
-   }
+
    function handleInput(){
     setInput(event.target.value);
     // console.log(array);
@@ -270,7 +260,7 @@ function SortingVisualizer() {
         )
       }
         <Button id="pauseButton" inverted color="yellow" disabled={pauseDisabled} style={{display:!isHidden?"none":""}}  > Pause </Button>
-        <Button style={{display:!isHidden?"none":""}} inverted color="red" onClick={handleStop}>Stop</Button>
+        <Button id="stopButton" style={{display:!isHidden?"none":""}} inverted color="red" >Stop</Button>
     </div>
   );
 } 
