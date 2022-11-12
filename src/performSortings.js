@@ -435,6 +435,7 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
       }
       j = 0;
     }
+    steps = [];
     setQuickSort(true);
     document.getElementById("pauseButton").removeEventListener("click",setTemp1);
     // setArray(sortedArray);
