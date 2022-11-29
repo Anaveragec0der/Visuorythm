@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import 'semantic-ui-css/semantic.min.css'
-import { Button,Icon, Input, Label,Transition } from 'semantic-ui-react'
+import { Button,Icon, Input, Label,Transition,Modal, Header, Image} from 'semantic-ui-react'
 import Slider from '@mui/material/Slider';
 import "./sortingVisualizer.css";
 import {
@@ -11,6 +11,7 @@ import {
   performQuickSort,
   performSelectionSort
 } from "./performSortings"
+import facts from './facts.json';
 
 let arrayOfNumbers=[];
 function SortingVisualizer() {
@@ -30,6 +31,8 @@ function SortingVisualizer() {
   const[value,setValue]=useState(100);
   const[speed,setSpeed]=useState(50);
   const[input,setInput]=useState("");
+  const[modal,setModal]=useState(true);
+  const[open,setOpen]=useState(false);
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
@@ -69,6 +72,7 @@ function SortingVisualizer() {
     setIState(0);
     setJState(0);
     resetArray();
+    console.log(facts);
   }
 
   function forceGenerateNewArray(){
@@ -76,14 +80,13 @@ function SortingVisualizer() {
     setIState(0);
     setJState(0);
     resetArray("","force");
+    console.log(facts);
   }
 
   //display original array in the console
   function ShowArray() {
     console.log(array);
   }
-
- 
  
   const handleStop = ()=>{
       setResumeText(false);
@@ -93,13 +96,28 @@ function SortingVisualizer() {
       setQuickSort(false);
       setMergeSort(false);
       setSelectionSort(false);
+      setBubbleSort(false);
       setHidden(false);
       forceGenerateNewArray();
  }
   async function performSort(sort,nameOfAlgo){
     if(nameOfAlgo==='Heap Sort')setPauseDisabled(true);
     setHidden(true);
-    if(nameOfAlgo==="Bubble Sort"){
+    if(nameOfAlgo==="Insertion Sort"){
+      setResumeText(true);
+      setNewArray(true);
+      setHeapSort(true);
+      setQuickSort(true);
+      setMergeSort(true);
+      setBubbleSort(true);
+      setSelectionSort(true);
+      setModal(false);
+      await sort(array,setArray,iState,jState,setIState,setJState,setInsertionSort,handleStop);
+      setHidden(false);
+      setModal(true);
+    }
+
+    else if(nameOfAlgo==="Bubble Sort"){
       setResumeText(true);
       setNewArray(true);
       setInsertionSort(true);
@@ -107,9 +125,10 @@ function SortingVisualizer() {
       setQuickSort(true);
       setMergeSort(true);
       setSelectionSort(true);
+      setModal(false);
       await sort(array,setArray,iState,jState,setIState,setJState,setBubbleSort,handleStop);
+      setModal(true);
       setHidden(false);
-      
     }
     else if(nameOfAlgo==="Selection Sort"){
       setResumeText(true);
@@ -119,18 +138,9 @@ function SortingVisualizer() {
       setQuickSort(true);
       setMergeSort(true);
       setBubbleSort(true);
+      setModal(false);
       await sort(array,setArray,iState,jState,setIState,setJState,setSelectionSort,handleStop);
-      setHidden(false);
-    }
-    else if(nameOfAlgo==="Insertion Sort"){
-      setResumeText(true);
-      setNewArray(true);
-      setHeapSort(true);
-      setQuickSort(true);
-      setMergeSort(true);
-      setBubbleSort(true);
-      setSelectionSort(true);
-      await sort(array,setArray,iState,jState,setIState,setJState,setInsertionSort,handleStop);
+      setModal(true);
       setHidden(false);
     }
     else if(nameOfAlgo==="Quick Sort"){
@@ -141,7 +151,9 @@ function SortingVisualizer() {
       setSelectionSort(true);
       setHeapSort(true);
       setMergeSort(true);
+      setModal(false);
       await sort(array,setArray,iState,jState,setIState,setJState,setQuickSort,handleStop);
+      setModal(true);
       setHidden(false);
     }
     else if(nameOfAlgo==="Merge Sort"){
@@ -152,7 +164,9 @@ function SortingVisualizer() {
       setHeapSort(true);
       setQuickSort(true);
       setInsertionSort(true);
+      setModal(false);
       await sort(array,setArray,iState,jState,setIState,setJState,setMergeSort,handleStop);
+      setModal(true);
       setHidden(false);
     }
     else if(nameOfAlgo==="Heap Sort"){
@@ -163,7 +177,9 @@ function SortingVisualizer() {
       setMergeSort(true);
       setInsertionSort(true);
       setQuickSort(true);
+      setModal(false);
       await sort(array,setArray,iState,jState,setIState,setJState,setHeapSort,handleStop);
+      setModal(true);
       setHidden(false);
     }
     // setHidden(false);
@@ -192,7 +208,7 @@ function SortingVisualizer() {
      <div>
      <div id="inputContainer">
      <Label as='a' color='violet' pointing="right">
-     Enter the valuess in array
+     Enter the values in array
         </Label>
      <Input type={"text"}
      fluid 
@@ -222,6 +238,200 @@ function SortingVisualizer() {
     </div>
     </div>
 </div>
+
+<div>
+  {
+  !modal && (
+        !insertionSort && (<Modal onClose={()=> setOpen(false)}
+    onOpen={()=> setOpen(true)}
+    open={open}
+    trigger={<Button>Facts on Insertion Sort</Button>}>
+    <Modal.Header>Insertion Sort</Modal.Header> 
+    <Modal.Content image>
+    <Image size="medium" src='https://miro.medium.com/max/282/1*k3CdGcgncPVj5qjiqskvTg.png' wrapped />
+    <Modal.Description>
+      <Header>Complexity:-{facts[1].complexity}</Header>
+      <p>
+        <h4>Description <Icon loading name="star"/></h4> {facts[1].facts}
+        <h4>Adaptive <Icon name="circle check"/></h4> {facts[1].adaptive}
+        <h4>Stable <Icon name="circle check"/></h4> {facts[1].stable}
+      </p>
+    </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button 
+        content="Close"
+        labelPosition="right"
+        icon="close"
+        onClick={()=> setOpen(false)}
+        negative
+      />
+    </Modal.Actions>
+  </Modal>)
+  )
+  }
+  </div>
+<div>
+  {
+  !modal && (
+        !bubbleSort && (<Modal onClose={()=> setOpen(false)}
+    onOpen={()=> setOpen(true)}
+    open={open}
+    trigger={<Button>Facts on Bubble Sort</Button>}>
+    <Modal.Header>Bubble Sort</Modal.Header> 
+    <Modal.Content image>
+    <Image size="large" src='https://bournetocode.com/projects/GCSE_Computing_Fundamentals/pages/img/bubble_sort_pass.png' wrapped />
+    <Modal.Description>
+      <Header>Complexity:-{facts[0].complexity}</Header>
+      <p>
+        <h4>Description <Icon loading name="star"/></h4> {facts[0].facts}
+        <h4>Adaptive <Icon name="circle check"/></h4> {facts[0].adaptive}
+        <h4>Stable <Icon name="circle check"/></h4> {facts[0].stable}
+      </p>
+    </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button 
+        content="Close"
+        labelPosition="right"
+        icon="close"
+        onClick={()=> setOpen(false)}
+        negative
+      />
+    </Modal.Actions>
+  </Modal>)
+  )
+  }
+  </div>
+<div>
+  {
+  !modal && (
+        !selectionSort && (<Modal onClose={()=> setOpen(false)}
+    onOpen={()=> setOpen(true)}
+    open={open}
+    trigger={<Button>Facts on Selection Sort</Button>}>
+    <Modal.Header>Selection Sort</Modal.Header> 
+    <Modal.Content image>
+    <Image size="large" src='https://www.programiz.com/sites/tutorial2program/files/Selection-sort-0-comparision.png' wrapped />
+    <Modal.Description>
+      <Header>Complexity:-{facts[2].complexity}</Header>
+      <p>
+        <h4>Description <Icon loading name="star"/></h4> {facts[2].facts}
+        <h4>Adaptive <Icon name="times circle"/></h4> {facts[2].adaptive}
+        <h4>Stable <Icon name="times circle"/></h4> {facts[2].stable}
+      </p>
+    </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button 
+        content="Close"
+        labelPosition="right"
+        icon="close"
+        onClick={()=> setOpen(false)}
+        negative
+      />
+    </Modal.Actions>
+  </Modal>)
+  )
+  }
+  </div>
+<div>
+  {
+  !modal && (
+        !quickSort && (<Modal onClose={()=> setOpen(false)}
+    onOpen={()=> setOpen(true)}
+    open={open}
+    trigger={<Button>Facts on Quick Sort</Button>}>
+    <Modal.Header>Quick Sort</Modal.Header> 
+    <Modal.Content image>
+    <Image size="large" src='https://static.studytonight.com/data-structures/images/basic-quick-sort.png' wrapped />
+    <Modal.Description>
+      <Header>Complexity:-{facts[3].complexity}</Header>
+      <p>
+        <h4>Description <Icon loading name="star"/> <Icon loading name="star"/> <Icon loading name="star"/> <Icon loading name="star"/> <Icon loading name="star"/> </h4> {facts[3].facts}
+        <h4>Adaptive <Icon name="times circle"/></h4> {facts[3].adaptive}
+        <h4>Stable <Icon name="times circle"/></h4> {facts[3].stable}
+      </p>
+    </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button 
+        content="Close"
+        labelPosition="right"
+        icon="close"
+        onClick={()=> setOpen(false)}
+        negative
+      />
+    </Modal.Actions>
+  </Modal>)
+  )
+  }
+  </div>
+<div>
+  {
+  !modal && (
+        !heapSort && (<Modal onClose={()=> setOpen(false)}
+    onOpen={()=> setOpen(true)}
+    open={open}
+    trigger={<Button>Facts on Heap Sort</Button>}>
+    <Modal.Header>Heap Sort</Modal.Header> 
+    <Modal.Content image>
+    <Image size="large" src='https://global-uploads.webflow.com/5d0dc87aac109e1ffdbe379c/60be35c5db7adf4d16e3d7f3_ZzgJzSvjWHACMEuhCgWYcrFVYuYFP8YVnugTBs53Ax6_tXi4CqBRFsCiooJcfXLQ8NKsfZ1v4VyCgEH0LlKXEt81WzVSSINUCM4GK6MtAzY3pL71a9eSRTeBSCnutyLkrhrNETSJ.png' wrapped />
+    <Modal.Description>
+      <Header>Complexity:-{facts[4].complexity}</Header>
+      <p>
+        <h4>Description <Icon loading name="star"/> <Icon loading name="star"/> <Icon loading name="star"/> </h4> {facts[4].facts}
+        <h4>Adaptive <Icon name="times circle"/></h4> {facts[4].adaptive}
+        <h4>Stable <Icon name="times circle"/></h4> {facts[4].stable}
+      </p>
+    </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button 
+        content="Close"
+        labelPosition="right"
+        icon="close"
+        onClick={()=> setOpen(false)}
+        negative
+      />
+    </Modal.Actions>
+  </Modal>)
+  )
+  }
+  </div>
+<div>
+  {
+  !modal && (
+        !mergeSort && (<Modal onClose={()=> setOpen(false)}
+    onOpen={()=> setOpen(true)}
+    open={open}
+    trigger={<Button>Facts on Merge Sort</Button>}>
+    <Modal.Header>Merge Sort</Modal.Header> 
+    <Modal.Content image>
+    <Image size="large" src='https://www.simplilearn.com/ice9/free_resources_article_thumb/mergesort/merge_sort-what-img1.png' wrapped />
+    <Modal.Description>
+      <Header>Complexity:-{facts[5].complexity}</Header>
+      <p>
+        <h4>Description <Icon loading name="star"/> <Icon loading name="star"/> <Icon loading name="star"/> </h4> {facts[5].facts}
+        <h4>Adaptive <Icon name="times circle"/></h4> {facts[5].adaptive}
+        <h4>Stable <Icon name="circle check"/></h4> {facts[5].stable}
+      </p>
+    </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions>
+      <Button 
+        content="Close"
+        labelPosition="right"
+        icon="close"
+        onClick={()=> setOpen(false)}
+        negative
+      />
+    </Modal.Actions>
+  </Modal>)
+  )
+  }
+  </div>
+
       <div className="array-container">
 
         {array.map((value, index) => (
