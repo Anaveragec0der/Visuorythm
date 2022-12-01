@@ -192,8 +192,13 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
 
 
   //Heap Sort Visualization
-  async function performHeapSort(array, setArray) {
+  async function performHeapSort(array, setArray,iState,jState,setIState,setJState,setHeapSort,handleStop) {
     let len = array.length;
+    let stopped=false;
+    const setStopped=()=>{
+      stopped=true;
+    }
+    document.getElementById("stopButton").addEventListener("click",setStopped);
     // console.log(len);
     // console.log(array);
     let heapifiedArrayAndSwappedIndexes = Heapify(array.slice(), len);
@@ -236,6 +241,11 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
 
       barA.classList.toggle("active");
       barB.classList.toggle("active");
+      if(stopped){
+        document.getElementById('stopButton').removeEventListener('click',setStopped);
+        handleStop();
+        return;
+      }
 
     }
     // console.log("heap created");
@@ -292,10 +302,16 @@ async function performBubbleSort(array,setArray,iState,jState,setIState,setJStat
         // barTwoStyle.backgroundColor = "turquoise";
         barA.classList.toggle("active");
         barB.classList.toggle("active");
+        if(stopped){
+          document.getElementById('stopButton').removeEventListener('click',setStopped);
+          handleStop();
+          return;
+        }
       }
 
     }
     // setArray(sortedArray);
+    setHeapSort(true);
   }
 //Merge Sort Visualization
 

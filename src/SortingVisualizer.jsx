@@ -72,7 +72,6 @@ function SortingVisualizer() {
     setIState(0);
     setJState(0);
     resetArray();
-    console.log(facts);
   }
 
   function forceGenerateNewArray(){
@@ -80,7 +79,6 @@ function SortingVisualizer() {
     setIState(0);
     setJState(0);
     resetArray("","force");
-    console.log(facts);
   }
 
   //display original array in the console
