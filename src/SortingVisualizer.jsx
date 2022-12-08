@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import 'semantic-ui-css/semantic.min.css'
 import { Button,Icon, Input, Label,Transition,Modal, Header, Image} from 'semantic-ui-react'
 import Slider from '@mui/material/Slider';
@@ -12,6 +12,7 @@ import {
   performSelectionSort
 } from "./performSortings"
 import facts from './facts.json';
+import { ThemeContext } from "./App";
 
 let arrayOfNumbers=[];
 function SortingVisualizer() {
@@ -33,6 +34,7 @@ function SortingVisualizer() {
   const[input,setInput]=useState("");
   const[modal,setModal]=useState(true);
   const[open,setOpen]=useState(false);
+  const theme = useContext(ThemeContext);
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
@@ -40,6 +42,7 @@ function SortingVisualizer() {
   window.onresize = resetArray;
 
   function resetArray(event,force) {
+    console.log(theme);
    if(input.length===0||force){
     const arr = [];
     const arrayBar = document.getElementById("sample");
@@ -218,21 +221,21 @@ function SortingVisualizer() {
      <div id="sliders">
      <div id="sizeSlider">
       <div className="iconContainer">
-      <Icon name="minus"/>
+      <Icon name="minus" color={theme.theme==='dark'?'pink':'black'}/>
       </div>    
     <Slider color="secondary" size="small" value={value} min={10} max={100} step={10} valueLabelDisplay="auto" onChange={(event,value)=>{setValue(value);generateNewArray();}}/>
     <div className="iconContainer">
-    <Icon name="plus"/>
+    <Icon name="plus" color={theme.theme==='dark'?'pink':'black'}/>
     </div>
     </div>
     
      <div data-value= {speed} id="speedControl" >
      <div className="iconContainer">
-    <Icon name="backward"/>
+    <Icon name="backward" color={theme.theme==='dark'?'pink':'black'}/>
     </div>
     <Slider color="secondary" size="small" value={speed} min={10} max={100} step={10} valueLabelDisplay="auto" onChange={(event,value)=>{setSpeed(value)}}/>
     <div className="iconContainer">
-    <Icon name="forward"/>
+    <Icon name="forward" color={theme.theme==='dark'?'pink':'black'}/>
     </div>
     </div>
 </div>
@@ -434,7 +437,7 @@ function SortingVisualizer() {
 
         {array.map((value, index) => (
           <div
-            className="array-bar"
+            className={`array-bar ${theme.theme}`}
             key={index}
             id={index}
             style={{ height: `${value}px` }}
@@ -452,23 +455,23 @@ function SortingVisualizer() {
             animation="bounce" 
             duration={500} 
             >
-              <Button primary style={{display:generateNewArrayHidden?"none":""}} onClick={forceGenerateNewArray}>
+              <Button color={theme.theme==='dark'?'violet':'blue'} style={{display:generateNewArrayHidden?"none":""}} onClick={forceGenerateNewArray}>
           Generate New Array</Button>
             </Transition>
         
-        <Button basic color={!resumeText?"teal":"green"} style={{display:insertionSort?"none":""}} onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>{!resumeText?"Insertion Sort":"Resume"}</Button>
-        <Button basic color={!resumeText?"teal":"green"} style={{display:bubbleSort?"none":""}} onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>{!resumeText?"BubbleSort":"Resume"}</Button>
-        <Button basic color={!resumeText?"teal":"green"} style={{display:selectionSort?"none":""}} onClick={()=>performSort(performSelectionSort,"Selection Sort")}>{!resumeText?"SelectionSort":"Resume"}</Button>
-        <Button basic color={!resumeText?"teal":"green"} style={{display:quickSort?"none":""}} onClick={()=>performSort(performQuickSort,"Quick Sort")}>{!resumeText?"Quick Sort":"Resume"}</Button>
-        <Button basic color={!resumeText?"teal":"green"} style={{display:heapSort?"none":""}} onClick={()=>performSort(performHeapSort,"Heap Sort")}>{!resumeText?"Heap Sort":"Resume"}</Button>
-        <Button basic color={!resumeText?"teal":"green"} style={{display:mergeSort?"none":""}} onClick={()=>performSort(performMergeSort,"Merge Sort")}>{!resumeText?"Merge Sort":"Resume"}</Button>
-         <Button onClick={ShowArray}> Show Original Array </Button> 
+        <Button className="sort-buttons" basic color={!resumeText?theme.theme==='dark'?'pink':"teal":"green"} style={{display:insertionSort?"none":""}} onClick={()=>performSort(performInsertionSort,"Insertion Sort")}>{!resumeText?"Insertion Sort":"Resume"}</Button>
+        <Button className="sort-buttons" basic color={!resumeText?theme.theme==='dark'?'pink':"teal":"green"} style={{display:bubbleSort?"none":""}} onClick={()=>performSort(performBubbleSort,"Bubble Sort")}>{!resumeText?"BubbleSort":"Resume"}</Button>
+        <Button className="sort-buttons" basic color={!resumeText?theme.theme==='dark'?'pink':"teal":"green"} style={{display:selectionSort?"none":""}} onClick={()=>performSort(performSelectionSort,"Selection Sort")}>{!resumeText?"SelectionSort":"Resume"}</Button>
+        <Button className="sort-buttons" basic color={!resumeText?theme.theme==='dark'?'pink':"teal":"green"} style={{display:quickSort?"none":""}} onClick={()=>performSort(performQuickSort,"Quick Sort")}>{!resumeText?"Quick Sort":"Resume"}</Button>
+        <Button className="sort-buttons" basic color={!resumeText?theme.theme==='dark'?'pink':"teal":"green"} style={{display:heapSort?"none":""}} onClick={()=>performSort(performHeapSort,"Heap Sort")}>{!resumeText?"Heap Sort":"Resume"}</Button>
+        <Button className="sort-buttons" basic color={!resumeText?theme.theme==='dark'?'pink':"teal":"green"} style={{display:mergeSort?"none":""}} onClick={()=>performSort(performMergeSort,"Merge Sort")}>{!resumeText?"Merge Sort":"Resume"}</Button>
+         <Button basic className="sort-buttons" color={theme.theme==='dark'?'grey':'black'} onClick={ShowArray}> Show Original Array </Button> 
         {generateNewArrayHidden&&(<Button secondary onClick={handleStop}> Reset </Button>)}
           </>
         )
       }
-        <Button id="pauseButton" inverted color="yellow" disabled={pauseDisabled} style={{display:!isHidden?"none":""}}  > Pause </Button>
-        <Button id="stopButton" style={{display:!isHidden?"none":""}} inverted color="red" >Stop</Button>
+        <Button className="sort-buttons" id="pauseButton" inverted color="yellow" disabled={pauseDisabled} style={{display:!isHidden?"none":""}}  > Pause </Button>
+        <Button className="sort-buttons" id="stopButton" style={{display:!isHidden?"none":""}} inverted color="red" >Stop</Button>
     </div>
   );
 } 

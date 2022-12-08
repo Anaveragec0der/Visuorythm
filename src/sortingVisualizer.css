@@ -6,11 +6,18 @@
   padding: 5% 2% 2%;
 }
 
-.array-bar {
+.array-bar{
   width: 7px;
-  background-color: turquoise;
   display: inline-block;
   margin: 0 2px;
+}
+
+.array-bar.light {
+  background-color: #4ECCA3;
+}
+
+.array-bar.dark{
+  background-color: #CF9FFF
 }
 
 @media only screen and (max-width: 600px) {
@@ -57,4 +64,8 @@
 .iconContainer{
   padding: 5px;
   margin: 5px;
+}
+
+button.sort-buttons.ui{
+  margin: 3px;
 }

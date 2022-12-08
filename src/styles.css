@@ -3,10 +3,10 @@
   text-align: center;
 }
 #light {
- background-color: #111b20;
+  background-color: #fff;
 }
 #dark {
-  background-color: #fff;
+  background-color: #1b1c1d;
 }
 .radio-toggle {
   display: flex;
