@@ -1,4 +1,5 @@
 import { useEffect, useContext } from "react"
+import { Icon, Transition } from "semantic-ui-react";
 import { ThemeContext } from "./App";
 
 export default function TitleBar(){
@@ -73,6 +74,16 @@ export default function TitleBar(){
                 <div class={`titleLetter ${theme.theme}`}>m</div>
                 <div class={`titleLetter ${theme.theme}`}>h</div>
             </div>
+            <span className="radio-toggle">
+      {(theme.theme==='light'?
+        <span>
+        <Icon size='large' color='black' name="moon outline" onClick={theme.toggleTheme} style={{cursor:'pointer'}}/>
+        </span>:
+        <span>
+        <Icon size='large' name="lightbulb outline" color='yellow' onClick={theme.toggleTheme} style={{cursor:'pointer'}}/>
+        </span>
+      )}
+      </span>
         </div>
     )
 }

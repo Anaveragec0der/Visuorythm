@@ -1,6 +1,7 @@
 .App {
   font-family: sans-serif;
   text-align: center;
+  height: 100vh;
 }
 #light {
   background-color: #fff;
@@ -8,20 +9,20 @@
 #dark {
   background-color: #1b1c1d;
 }
-.radio-toggle {
-  display: flex;
-  width: 100vw;
-  height: 100px;
-  justify-content: center;
-  align-content: center;
-  margin-top: 20px;
+
+.radio-toggle{
+  transition: transform ease-in 0.2s;
+}
+
+.radio-toggle:hover{
+  transform: scale(1.1);
 }
 
 #titleBar{
   width: 100vw;
-  padding: 2px 0 0px 0;
+  padding: 5px 0 0px 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 #title{

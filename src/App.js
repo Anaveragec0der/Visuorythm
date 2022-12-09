@@ -15,20 +15,6 @@ export default function App() {
     <div className="App" id={theme}>
       <TitleBar/>
       <SortingVisualizer />
-      <div className="radio-toggle">
-      {(theme==='light'?
-      <Transition animation="zoom" duration={500}>
-        <div>
-        <Icon size='large' color='black' name="moon outline" onClick={toggleTheme} style={{cursor:'pointer'}}/>
-        </div>
-      </Transition>:
-      <Transition animation="zoom" duration={500}>
-        <div>
-        <Icon size='large' name="lightbulb outline" color='yellow' onClick={toggleTheme} style={{cursor:'pointer'}}/>
-        </div>
-      </Transition>
-      )}
-      </div>
     </div>
     </ThemeContext.Provider>
   );
