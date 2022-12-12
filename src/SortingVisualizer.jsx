@@ -34,6 +34,7 @@ function SortingVisualizer() {
   const[input,setInput]=useState("");
   const[modal,setModal]=useState(true);
   const[open,setOpen]=useState(false);
+  const[height,setHeight]=useState([]);
   const theme = useContext(ThemeContext);
   function randomInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -68,6 +69,21 @@ function SortingVisualizer() {
   }, []);
 
   useEffect(() => {
+    const arr = document.getElementsByClassName('array-bar');
+    const h = [];
+    for(let i=0;i<arr.length;i++){
+      h.push(arr[i].clientHeight);
+    }
+    setHeight(h);
+
+    setInterval(()=>{
+      const arr = document.getElementsByClassName('array-bar');
+      const h = [];
+      for(let i=0;i<arr.length;i++){
+        h.push(arr[i].clientHeight);
+      }
+      setHeight(h);
+    },10)
   }, [array]);
    
   //for generating new array
@@ -442,7 +458,7 @@ function SortingVisualizer() {
             id={index}
             style={{ height: `${value}px` }}
           >
-            {" "}
+            {height[index]}
           </div>
         ))}
         <br />

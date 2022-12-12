@@ -10,6 +10,12 @@
   width: 7px;
   display: inline-block;
   margin: 0 2px;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: x-small;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 
 .array-bar.light {
