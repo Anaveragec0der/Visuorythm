@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react"
-import { Icon, Transition } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { ThemeContext } from "./App";
 
 export default function TitleBar(){
@@ -63,24 +63,24 @@ export default function TitleBar(){
     return (
         <div id="titleBar">
             <div id="title">
-                <div class={`titleLetter ${theme.theme}`}>i</div>
-                <div class={`titleLetter ${theme.theme}`}>V</div>
-                <div class={`titleLetter ${theme.theme}`}>u</div>
-                <div class={`titleLetter ${theme.theme}`}>s</div>
-                <div class={`titleLetter ${theme.theme}`}>r</div>
-                <div class={`titleLetter ${theme.theme}`}>o</div>
-                <div class={`titleLetter ${theme.theme}`}>t</div>
-                <div class={`titleLetter ${theme.theme}`}>y</div>
-                <div class={`titleLetter ${theme.theme}`}>m</div>
-                <div class={`titleLetter ${theme.theme}`}>h</div>
+                <div className={`titleLetter ${theme.theme}`}>i</div>
+                <div className={`titleLetter ${theme.theme}`}>V</div>
+                <div className={`titleLetter ${theme.theme}`}>u</div>
+                <div className={`titleLetter ${theme.theme}`}>s</div>
+                <div className={`titleLetter ${theme.theme}`}>r</div>
+                <div className={`titleLetter ${theme.theme}`}>o</div>
+                <div className={`titleLetter ${theme.theme}`}>t</div>
+                <div className={`titleLetter ${theme.theme}`}>y</div>
+                <div className={`titleLetter ${theme.theme}`}>m</div>
+                <div className={`titleLetter ${theme.theme}`}>h</div>
             </div>
             <span className="radio-toggle">
       {(theme.theme==='light'?
         <span>
-        <Icon size='large' color='black' name="moon outline" onClick={theme.toggleTheme} style={{cursor:'pointer'}}/>
+        <Icon size='large' color='black' name="moon" onClick={theme.toggleTheme} style={{cursor:'pointer'}}/>
         </span>:
         <span>
-        <Icon size='large' name="lightbulb outline" color='yellow' onClick={theme.toggleTheme} style={{cursor:'pointer'}}/>
+        <Icon size='large' name="lightbulb" color='yellow' onClick={theme.toggleTheme} style={{cursor:'pointer'}}/>
         </span>
       )}
       </span>

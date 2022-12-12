@@ -11,7 +11,7 @@
 }
 
 .radio-toggle{
-  transition: transform ease-in 0.2s;
+  transition: transform ease-in 0.1s;
 }
 
 .radio-toggle:hover{
@@ -42,4 +42,20 @@
 
 .titleLetter.light{
   color: black
+}
+
+#appFooter{
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 15px;
+  width: 100vw;
+}
+
+#appFooter.light{
+  color: black;
+}
+
+#appFooter.dark{
+  color: #CF9FFF;
 }
