@@ -1,2 +1,2 @@
-# Algolization
+# Visuorythm
 Created with CodeSandbox
